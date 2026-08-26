@@ -1,0 +1,273 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Illomi | Websites for small businesses</title>
+<meta name="description" content="Illomi designs and builds fast, easy-to-update websites for small businesses. Copy, design, build and launch, handled by one team.">
+<meta name="theme-color" content="#08090B" media="(prefers-color-scheme: dark)">
+<meta name="theme-color" content="#F2F1EF" media="(prefers-color-scheme: light)">
+
+<meta property="og:title" content="Illomi | Websites for small businesses">
+<meta property="og:description" content="Fast to load, simple to update, made to get you booked.">
+<meta property="og:type" content="website">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:ital,wdth,wght@0,75..125,100..900;1,75..125,100..900&display=swap">
+<link rel="stylesheet" href="assets/css/site.css">
+<script>
+  /* before first paint: no flash of unrevealed type, no appearance swap */
+  document.documentElement.classList.add("js");
+  try {
+    var t = localStorage.getItem("illomi-theme");
+    if (t === "light" || t === "dark") document.documentElement.setAttribute("data-theme", t);
+  } catch (e) {}
+</script>
+</head>
+<body>
+
+<a class="skip" href="#main">Skip to content</a>
+
+<!-- Icons: Phosphor Icons (MIT), regular set from @phosphor-icons/core. Library paths, not hand-drawn. -->
+<svg class="sprite" aria-hidden="true" focusable="false" width="0" height="0">
+  <symbol id="i-arrow-up-right" viewBox="0 0 256 256"><path d="M200,64V168a8,8,0,0,1-16,0V83.31L69.66,197.66a8,8,0,0,1-11.32-11.32L172.69,72H88a8,8,0,0,1,0-16H192A8,8,0,0,1,200,64Z"/></symbol>
+  <symbol id="i-arrow-right" viewBox="0 0 256 256"><path d="M221.66,133.66l-72,72a8,8,0,0,1-11.32-11.32L196.69,136H40a8,8,0,0,1,0-16H196.69L138.34,61.66a8,8,0,0,1,11.32-11.32l72,72A8,8,0,0,1,221.66,133.66Z"/></symbol>
+  <symbol id="i-list" viewBox="0 0 256 256"><path d="M224,128a8,8,0,0,1-8,8H40a8,8,0,0,1,0-16H216A8,8,0,0,1,224,128ZM40,72H216a8,8,0,0,0,0-16H40a8,8,0,0,0,0,16ZM216,184H40a8,8,0,0,0,0,16H216a8,8,0,0,0,0-16Z"/></symbol>
+  <symbol id="i-x" viewBox="0 0 256 256"><path d="M205.66,194.34a8,8,0,0,1-11.32,11.32L128,139.31,61.66,205.66a8,8,0,0,1-11.32-11.32L116.69,128,50.34,61.66A8,8,0,0,1,61.66,50.34L128,116.69l66.34-66.35a8,8,0,0,1,11.32,11.32L139.31,128Z"/></symbol>
+  <symbol id="i-warning" viewBox="0 0 256 256"><path d="M128,24A104,104,0,1,0,232,128,104.11,104.11,0,0,0,128,24Zm0,192a88,88,0,1,1,88-88A88.1,88.1,0,0,1,128,216Zm-8-80V80a8,8,0,0,1,16,0v56a8,8,0,0,1-16,0Zm20,36a12,12,0,1,1-12-12A12,12,0,0,1,140,172Z"/></symbol>
+</svg>
+
+<!-- curtain: lifts once the type is ready, so the headline never lands mid-load -->
+<div class="intro" id="intro" aria-hidden="true">
+  <span class="intro__word">Illomi</span>
+</div>
+
+<header class="nav" id="nav">
+  <div class="nav__inner">
+    <a class="brand" href="#top" aria-label="Illomi, home">Illomi</a>
+
+    <nav class="nav__links" aria-label="Primary">
+      <a href="#work">Work</a>
+      <a href="#services">Services</a>
+      <a href="#pricing">Pricing</a>
+      <a class="link link--lead" href="#contact">Book a call</a>
+    </nav>
+
+    <button class="burger" id="burger" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="menu">
+      <svg class="icon icon--open" aria-hidden="true"><use href="#i-list"/></svg>
+      <svg class="icon icon--close" aria-hidden="true"><use href="#i-x"/></svg>
+    </button>
+  </div>
+</header>
+
+<div class="menu" id="menu" hidden>
+  <nav class="menu__links" aria-label="Mobile">
+    <a href="#work">Work</a>
+    <a href="#services">Services</a>
+    <a href="#pricing">Pricing</a>
+    <a href="#contact">Book a call</a>
+  </nav>
+</div>
+
+<main id="main">
+
+<!-- ============ HERO: editorial manifesto over the light field ============ -->
+<section class="hero" id="top">
+  <canvas class="hero__gl" id="hero-gl" aria-hidden="true"></canvas>
+  <div class="hero__fallback" aria-hidden="true"></div>
+
+  <div class="hero__inner">
+    <h1 class="hero__title" data-split>Get found. Get booked.</h1>
+    <div class="hero__foot">
+      <p class="hero__sub" data-reveal>We build the online backbone for your small business.</p>
+      <p class="hero__cta" data-reveal>
+        <a class="link link--lead" href="#contact">Book a call</a>
+        <a class="link" href="#work">See our work</a>
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ STATEMENT: words fill as the section passes ============ -->
+<section class="say">
+  <p class="say__body" data-fill>Most small businesses lose customers to their competitors from a simple Google search. We make sure that becomes a thing of the past.</p>
+</section>
+
+<!-- ============ WORK: full bleed horizontal pan ============ -->
+<section class="work" id="work">
+  <div class="work__pin">
+    <div class="work__sticky">
+      <div class="work__head">
+        <h2 class="h2" data-split>Example sites</h2>
+        <div class="work__progress" aria-hidden="true"><span class="work__bar" id="work-bar"></span></div>
+      </div>
+
+      <div class="work__track" id="work-track">
+        <!-- each card is a real page from /mockups, rendered live -->
+        <article class="proj">
+          <div class="proj__frame"><div class="proj__scroll"><iframe class="proj__site" src="mockups/bakehouse.html" title="Fen and Fable Bakehouse, concept design" loading="lazy" tabindex="-1" scrolling="no"></iframe></div></div>
+          <div class="proj__meta">
+            <h3 class="proj__name">Fen &amp; Fable Bakehouse</h3>
+            <p class="proj__note">A weekly menu the baker can rewrite in a minute.</p>
+          </div>
+        </article>
+        <article class="proj">
+          <div class="proj__frame"><div class="proj__scroll"><iframe class="proj__site" src="mockups/cycle.html" title="Rivet Cycle Works, concept design" loading="lazy" tabindex="-1" scrolling="no"></iframe></div></div>
+          <div class="proj__meta">
+            <h3 class="proj__name">Rivet Cycle Works</h3>
+            <p class="proj__note">A booking form shaped around how a workshop actually schedules.</p>
+          </div>
+        </article>
+        <article class="proj">
+          <div class="proj__frame"><div class="proj__scroll"><iframe class="proj__site" src="mockups/dental.html" title="Marisol Dental, concept design" loading="lazy" tabindex="-1" scrolling="no"></iframe></div></div>
+          <div class="proj__meta">
+            <h3 class="proj__name">Marisol Dental</h3>
+            <p class="proj__note">Registration finished before the first visit.</p>
+          </div>
+        </article>
+        <article class="proj">
+          <div class="proj__frame"><div class="proj__scroll"><iframe class="proj__site" src="mockups/roastery.html" title="Kestrel Roasting Co., concept design" loading="lazy" tabindex="-1" scrolling="no"></iframe></div></div>
+          <div class="proj__meta">
+            <h3 class="proj__name">Kestrel Roasting Co.</h3>
+            <p class="proj__note">A subscription you can pause without making an account.</p>
+          </div>
+        </article>
+        <article class="proj">
+          <div class="proj__frame"><div class="proj__scroll"><iframe class="proj__site" src="mockups/barbers.html" title="Copperline Barbers, concept design" loading="lazy" tabindex="-1" scrolling="no"></iframe></div></div>
+          <div class="proj__meta">
+            <h3 class="proj__name">Copperline Barbers</h3>
+            <p class="proj__note">One page, one button, and the prices in plain sight.</p>
+          </div>
+        </article>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ SERVICES: pointer tracked preview ============ -->
+<section class="svc" id="services">
+  <h2 class="h2 svc__h" data-split>What we do</h2>
+
+  <ul class="svc__list" id="svc-list">
+    <li class="svc__row">
+      <h3 class="svc__name" data-fly>Design and build</h3>
+      <p class="svc__desc">Layout, copy and code from one team, start to finish.</p>
+    </li>
+    <li class="svc__row">
+      <h3 class="svc__name" data-fly>Better outreach</h3>
+      <p class="svc__desc">We write from a phone call, not a questionnaire.</p>
+    </li>
+    <li class="svc__row">
+      <h3 class="svc__name" data-fly>Photo direction</h3>
+      <p class="svc__desc">We brief the shoot, or make the pictures you already have work.</p>
+    </li>
+    <li class="svc__row">
+      <h3 class="svc__name" data-fly>Local search setup</h3>
+      <p class="svc__desc">Maps, hours, reviews, and the markup that feeds them.</p>
+    </li>
+    <li class="svc__row">
+      <h3 class="svc__name" data-fly>Care and updates</h3>
+      <p class="svc__desc">Small changes handled the same week you ask for them.</p>
+    </li>
+  </ul>
+</section>
+
+<!-- ============ PARTNERED PLANS: four tiers, no prices ============ -->
+<section class="price" id="pricing">
+  <h2 class="h2" data-split>Partnered Plans</h2>
+
+  <div class="rate" data-reveal>
+    <h3 class="rate__name">Starter</h3>
+    <p class="rate__body" data-fill>One page. Two edits a month.</p>
+    <p class="rate__go"><a class="link" href="#contact">Book a call</a></p>
+  </div>
+
+  <div class="rate" data-reveal>
+    <h3 class="rate__name">Studio</h3>
+    <p class="rate__body" data-fill>Up to five pages. Ten edits a month.</p>
+    <p class="rate__go"><a class="link" href="#contact">Book a call</a></p>
+  </div>
+
+  <div class="rate" data-reveal>
+    <h3 class="rate__name">Full</h3>
+    <p class="rate__body" data-fill>Up to fifteen pages. Edits without a limit.</p>
+    <p class="rate__go"><a class="link" href="#contact">Book a call</a></p>
+  </div>
+
+  <div class="rate" data-reveal>
+    <h3 class="rate__name">Partner</h3>
+    <p class="rate__body" data-fill>Pages without a limit, a shop, and same day edits.</p>
+    <p class="rate__go"><a class="link" href="#contact">Book a call</a></p>
+  </div>
+
+  <p class="price__foot" data-reveal>Not sure which plan is right for you? Reach out :)</p>
+</section>
+
+<!-- ============ CONTACT ============ -->
+<section class="contact" id="contact">
+  <div class="contact__copy">
+    <h2 class="h2 contact__h" data-split>Let's get to work!</h2>
+    <p class="contact__lead" data-reveal>Let us know how we at Illomi can help you.</p>
+    <p class="contact__mail" data-reveal><a class="link" href="mailto:hello@illomi.com">hello@illomi.com</a></p>
+  </div>
+
+  <form class="form" id="form" novalidate>
+    <div class="field">
+      <label for="f-name">Your name</label>
+      <input id="f-name" name="name" type="text" autocomplete="name" required>
+      <p class="field__err" id="e-name" hidden><svg class="icon icon--sm" aria-hidden="true"><use href="#i-warning"/></svg><span></span></p>
+    </div>
+
+    <div class="field">
+      <label for="f-company">Company</label>
+      <input id="f-company" name="company" type="text" autocomplete="organization">
+    </div>
+
+    <div class="field">
+      <label for="f-email">Email</label>
+      <input id="f-email" name="email" type="email" autocomplete="email" required>
+      <p class="field__err" id="e-email" hidden><svg class="icon icon--sm" aria-hidden="true"><use href="#i-warning"/></svg><span></span></p>
+    </div>
+
+    <div class="field">
+      <label for="f-msg">How can we help?</label>
+      <textarea id="f-msg" name="message" rows="3" required></textarea>
+      <p class="field__err" id="e-msg" hidden><svg class="icon icon--sm" aria-hidden="true"><use href="#i-warning"/></svg><span></span></p>
+    </div>
+
+    <button class="submit" type="submit">
+      <span class="submit__label">Book a call</span>
+      <span class="submit__rule" aria-hidden="true"></span>
+    </button>
+
+    <p class="form__status" id="form-status" role="status" aria-live="polite"></p>
+  </form>
+</section>
+
+</main>
+
+<footer class="foot">
+  <div class="foot__inner">
+    <p class="foot__word">Illomi</p>
+    <nav class="foot__links" aria-label="Footer">
+      <a href="#work">Work</a>
+      <a href="#services">Services</a>
+      <a href="#pricing">Pricing</a>
+      <a href="mailto:hello@illomi.com">hello@illomi.com</a>
+    </nav>
+    <div class="foot__end">
+      <p class="foot__fine">Illomi, 2026. Websites for small businesses.</p>
+      <button class="foot__theme" id="theme-toggle" type="button">
+        <span class="vh">Appearance: </span><span id="theme-label">Auto</span>
+      </button>
+    </div>
+  </div>
+</footer>
+
+<div class="grain" aria-hidden="true"></div>
+
+<script src="assets/js/hero-gl.js" defer></script>
+<script src="assets/js/app.js" defer></script>
+</body>
+</html>
