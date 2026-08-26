@@ -160,19 +160,18 @@ uses the scroll fill, so the plans light up word by word as you read down them.
 
 | Tier | Pages | Edits | Price |
 | --- | --- | --- | --- |
-| Starter | One | Two a month | $149 a month |
-| Studio | Up to five | Ten a month | $249 a month |
-| Full | Up to ten | Twenty a month | $399 a month |
-| Partner | No limit | No limit | from $699 a month |
+| Starter | One | Two a month | $149/month |
+| Studio | Up to five | Ten a month | $249/month |
+| Full | Up to ten | Twenty a month | $399/month |
+| Partner | Unlimited | Unlimited | from $699/month |
 
 The figure is the only right aligned thing on the page, which is what makes the
 row scannable. The three columns are **fixed fractions**, not `auto`: every
 `.rate` is its own grid, so a content sized price column made each row measure
 its own columns, and "from $699 a month" being wider than "$149 a month" pushed
 that row's name and body left. Fixed fractions keep all four rows on one
-rhythm. The space before "a month" is a real character in the markup,
-not just the CSS margin, or the price reads as "$149a month" to a screen
-reader.
+rhythm. The suffix is `/month` set tight against the figure, with the
+margin removed so it reads as one price rather than two words.
 
 ## Motion, and why each piece exists
 
