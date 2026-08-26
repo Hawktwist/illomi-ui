@@ -138,6 +138,30 @@ The inertial scroll drives the **real** scroll position rather than transforming
 a wrapper, which is why `position: sticky`, anchors and the pinned rail all keep
 working underneath it.
 
+### On a phone
+
+The mobile problems were weight, not layout: nothing overflowed at 390px or
+360px, but the page was doing desktop-grade work on a battery.
+
+| | Before | After |
+| --- | --- | --- |
+| Hero field | 1.01 Mpx a frame, looping at 60fps | 0.23 Mpx, drawn once |
+| Mockup imagery | 8.2 Mpx across 15 images | 2.9 Mpx, all lazy |
+| Grain layer | Full screen blended composite every frame | Off |
+
+The hero is the important one. Its whole premise is that **the pointer is the
+light**, and a touch screen has no pointer, so the loop was animating a drift
+nobody could drive. On `(pointer: coarse)` it now caps the buffer at 1x, draws a
+single frame and never starts the loop. The pointer listener is not attached at
+all.
+
+The grain is a texture worth a few pixels on a desktop and worth nothing on a
+phone, where it costs a whole screen composite per frame.
+
+One stale rule was also removed: the mobile service rows still used the two
+column grid built for the thumbnails that were deleted two passes ago, which
+left an empty `0px` track in front of every row.
+
 ### How it degrades
 
 - **`prefers-reduced-motion`** collapses everything: no inertial scroll, no

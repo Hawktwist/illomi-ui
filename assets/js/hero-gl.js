@@ -20,6 +20,14 @@
 
   var reduced = window.matchMedia("(prefers-reduced-motion: reduce)");
 
+  /* The whole premise of this field is that the pointer is the light. On a
+     touch screen there is no pointer, so the loop would be animating a drift
+     nobody is driving, at roughly a million shaded pixels a frame, on a
+     battery. Touch gets one static frame at a lower buffer and no loop. */
+  var coarse = window.matchMedia("(pointer: coarse)").matches
+            || window.matchMedia("(max-width: 900px)").matches;
+  function still() { return reduced.matches || coarse; }
+
   var VERT = [
     "attribute vec2 aPos;",
     "void main(){ gl_Position = vec4(aPos, 0.0, 1.0); }"
@@ -187,7 +195,7 @@
   var W = 0, H = 0;
   function resize() {
     var rect = canvas.getBoundingClientRect();
-    var dpr = Math.min(window.devicePixelRatio || 1, 1.75);
+    var dpr = Math.min(window.devicePixelRatio || 1, coarse ? 1 : 1.75);
     if (rect.width * rect.height > 1600 * 1000) dpr = Math.min(dpr, 1.25);
     var w = Math.max(1, Math.round(rect.width * dpr));
     var h = Math.max(1, Math.round(rect.height * dpr));
@@ -248,7 +256,7 @@
   }
 
   function startLoop() {
-    if (running || reduced.matches) return;
+    if (running || still()) return;
     running = true;
     if (!raf) raf = requestAnimationFrame(frame);
   }
@@ -272,7 +280,7 @@
   if (window.ResizeObserver) {
     new ResizeObserver(function () {
       resize();
-      if (reduced.matches) drawOnce();
+      if (still()) drawOnce();
     }).observe(canvas);
   } else {
     window.addEventListener("resize", function () { resize(); if (reduced.matches) drawOnce(); });
@@ -291,7 +299,7 @@
     else if (running && visible && !raf) { start = performance.now() - 1000; raf = requestAnimationFrame(frame); }
   });
 
-  window.addEventListener("pointermove", onMove, { passive: true });
+  if (!coarse) window.addEventListener("pointermove", onMove, { passive: true });
 
   canvas.addEventListener("webglcontextlost", function (e) {
     e.preventDefault();
@@ -300,7 +308,7 @@
   });
 
   function applyMode() {
-    if (reduced.matches) { stopLoop(); resize(); drawOnce(); }
+    if (still()) { stopLoop(); resize(); drawOnce(); }
     else { startLoop(); }
   }
   if (reduced.addEventListener) reduced.addEventListener("change", applyMode);
@@ -312,7 +320,7 @@
   window.IllomiHero = {
     refresh: function () {
       pushColors();
-      if (reduced.matches) drawOnce();
+      if (still()) drawOnce();
     }
   };
 })();

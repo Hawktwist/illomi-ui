@@ -503,17 +503,9 @@ section[id] { scroll-margin-top: var(--nav-h); }
   .proj__scroll { transition: none; transform: none !important; }
   .work__progress { display: none; }
 
-  /* pointer preview means nothing on touch, so each row carries its own image */
-
-  .svc__row { grid-template-columns: auto minmax(0, 1fr); align-items: center; }
-
-  .svc__name, .svc__desc { grid-column: 2; }
-  .svc__row:hover .svc__name { transform: none; }
-  .svc__name { transform: none !important; }
-  .svc__name.is-flying {
-    background-image: none; color: var(--text) !important;
-    -webkit-mask-image: none; mask-image: none;
-  }
+  /* one column: the two column grid here was built for thumbnails that no
+     longer exist, and was leaving an empty 0px track in front of every row */
+  .svc__row { grid-template-columns: minmax(0, 1fr); gap: 0.35rem; }
   .svc__list:hover .svc__row:not(:hover) .svc__name,
   .svc__list:hover .svc__row:not(:hover) .svc__desc { opacity: 1; }
 
@@ -567,6 +559,13 @@ section[id] { scroll-margin-top: var(--nav-h); }
   .proj__scroll { transition: none; transform: none !important; }
   .work__progress { display: none; }
 
+}
+
+/* A fixed, full screen, blended layer costs a whole screen composite on every
+   frame. It is a texture worth a few pixels of grain on a desktop and worth
+   nothing on a phone. */
+@media (pointer: coarse), (max-width: 900px) {
+  .grain { display: none; }
 }
 
 /* reduced transparency: drop the blur, keep the contrast */
