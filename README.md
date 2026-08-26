@@ -145,15 +145,40 @@ The mobile problems were weight, not layout: nothing overflowed at 390px or
 
 | | Before | After |
 | --- | --- | --- |
-| Hero field | 1.01 Mpx a frame, looping at 60fps | 0.23 Mpx, drawn once |
+| Hero field | 1.01 Mpx a frame, 60fps, noise shader | 0.33 Mpx, 30fps, sine shader |
 | Mockup imagery | 8.2 Mpx across 15 images | 2.9 Mpx, all lazy |
 | Grain layer | Full screen blended composite every frame | Off |
 
 The hero is the important one. Its whole premise is that **the pointer is the
 light**, and a touch screen has no pointer, so the loop was animating a drift
-nobody could drive. On `(pointer: coarse)` it now caps the buffer at 1x, draws a
-single frame and never starts the loop. The pointer listener is not attached at
-all.
+nobody could drive.
+
+Touch now gets a **wind** instead: a train of long waves crosses the dot field,
+and each row of dots picks the wave up a beat after the row above it, so it
+leans and lights like grass rather than sliding like a bar. A crest takes about
+**14.5 seconds** to cross the screen.
+
+It is a separate branch in the shader, entered on a uniform, and it is cheap in
+a way the desktop path is not:
+
+| Per pixel, per frame | Desktop (pointer) | Touch (wind) |
+| --- | --- | --- |
+| fbm calls | 3 | 0 |
+| value-noise samples | 15 | 0 |
+| hash evaluations | 60 | 0 |
+| sines | 1 | 3 |
+
+Plus a 1x buffer and a 30fps cap, since a fourteen second wave does not need
+sixty frames a second. Sustained pixel throughput drops from 60.6 Mpx/s to
+6.9 Mpx/s, on a shader doing a fraction of the work per pixel. The pointer
+listener is still not attached on touch, and `prefers-reduced-motion` still gets
+a single static frame with no loop at all.
+
+The frequency here is the thing to be careful with. The first version used
+`p.x`, which is aspect corrected and spans only about 0.6 on a portrait phone,
+so less than a quarter of a wave fitted across the screen and the whole field
+pulsed light and dark together instead of a crest travelling. It uses `uv.x`,
+which always spans 0 to 1, so the crest count holds on any screen shape.
 
 The grain is a texture worth a few pixels on a desktop and worth nothing on a
 phone, where it costs a whole screen composite per frame.

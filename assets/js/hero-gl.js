@@ -42,6 +42,7 @@
     "uniform vec3 uBg;",
     "uniform vec3 uDot;",
     "uniform vec3 uAccent;",
+    "uniform float uCalm;",   /* 1 on touch: wind instead of pointer */
 
     "float hash21(vec2 p){",
     "  p = fract(p * vec2(123.34, 456.21));",
@@ -72,29 +73,49 @@
     "  vec2 p = vec2(uv.x * asp, uv.y);",
     "  float t = uTime * 0.06;",
 
-    /* domain warped flow: the light source drifting under the grid */
-    "  vec2 q = vec2(fbm(p * 1.6 + vec2(t, -t * 0.7)), fbm(p * 1.6 + vec2(4.2 - t * 0.5, 1.7)));",
-    "  float flow = fbm(p * 2.2 + q * 1.5 + vec2(0.0, t * 1.2));",
-
-    /* pointer light, brightened by how fast the pointer is moving */
     "  vec2 pm = uPointer / uRes;",
     "  pm = vec2(pm.x * asp, pm.y);",
-    "  float d = length(p - pm);",
-    "  float pointer = exp(-d * d * 7.0) * (0.5 + uEnergy * 0.9);",
+    "  float light;",
+    "  float sway = 0.0;",
 
+    "  if (uCalm > 0.5) {",
+    /* Wind. A train of long waves crosses the field, each row of dots picking
+       the wave up a beat later than the row above it, which is what makes it
+       read as grass rather than as a sliding bar. No noise, three sines. */
+    /* uv, not p: p.x only spans the aspect ratio, which on a portrait phone
+       is about 0.6, so p.x * 1.15 gave under a quarter of a wave across the
+       whole screen. The entire field then pulsed light and dark together
+       instead of a crest travelling across it. uv.x always spans 0 to 1, so
+       the crest count is the same whatever the screen shape. */
+    "    float phase = uv.x * 8.0 - uTime * 0.55 + sin(uv.y * 5.5 + uTime * 0.28) * 0.9;",
+    "    float gust = sin(phase) * 0.5 + 0.5;",
+    "    light = 0.12 + pow(gust, 2.0) * 0.95;",
+    "    sway = sin(phase - 0.6) * 0.5 + 0.5;",
+    "  } else {",
+    /* domain warped flow: the light source drifting under the grid */
+    "    vec2 q = vec2(fbm(p * 1.6 + vec2(t, -t * 0.7)), fbm(p * 1.6 + vec2(4.2 - t * 0.5, 1.7)));",
+    "    float flow = fbm(p * 2.2 + q * 1.5 + vec2(0.0, t * 1.2));",
+    /* pointer light, brightened by how fast the pointer is moving */
+    "    float d = length(p - pm);",
+    "    float pointer = exp(-d * d * 7.0) * (0.5 + uEnergy * 0.9);",
     /* slow diagonal sweep so the field still breathes with no pointer at all */
-    "  float sweep = smoothstep(0.6, 0.0, abs(sin(t * 1.7 + (p.x * 0.9 + p.y * 0.6) * 2.4)));",
-
-    "  float light = flow * 0.85 + pointer + sweep * 0.2;",
-    "  light = clamp(light - 0.3, 0.0, 1.5);",
+    "    float sweep = smoothstep(0.6, 0.0, abs(sin(t * 1.7 + (p.x * 0.9 + p.y * 0.6) * 2.4)));",
+    "    light = clamp(flow * 0.85 + pointer + sweep * 0.2 - 0.3, 0.0, 1.5);",
+    "  }",
 
     /* the grid, sized in device pixels so density does not shift with viewport */
     "  float cell = 24.0;",
     "  vec2 g = mod(frag, cell) / cell - 0.5;",
 
-    /* cells lean toward the light, so the structure looks pulled into it */
-    "  vec2 toLight = normalize(pm - p + vec2(1e-5));",
-    "  g -= toLight * light * 0.17;",
+    /* Desktop: cells lean toward the pointer. Touch: cells lean along the
+       wind, which is the whole grass effect. */
+    "  if (uCalm > 0.5) {",
+    "    g.x -= (sway - 0.5) * 0.34;",
+    "    g.y -= (sway - 0.5) * 0.08;",
+    "  } else {",
+    "    vec2 toLight = normalize(pm - p + vec2(1e-5));",
+    "    g -= toLight * light * 0.17;",
+    "  }",
 
     /* past 0.5 the cells overlap, so near the source the grid melts into a
        continuous field instead of staying a field of separate dots */
@@ -159,7 +180,8 @@
     energy: gl.getUniformLocation(prog, "uEnergy"),
     bg: gl.getUniformLocation(prog, "uBg"),
     dot: gl.getUniformLocation(prog, "uDot"),
-    accent: gl.getUniformLocation(prog, "uAccent")
+    accent: gl.getUniformLocation(prog, "uAccent"),
+    calm: gl.getUniformLocation(prog, "uCalm")
   };
 
   /* ---------- theme colours come from the same CSS tokens as the page ---------- */
@@ -189,6 +211,7 @@
     gl.uniform3f(U.dot, dot[0], dot[1], dot[2]);
     gl.uniform3f(U.accent, ac[0], ac[1], ac[2]);
     gl.clearColor(bg[0], bg[1], bg[2], 1);
+    gl.uniform1f(U.calm, coarse ? 1.0 : 0.0);
   }
 
   /* ---------- sizing ---------- */
@@ -228,8 +251,15 @@
   var raf = 0;
   var start = performance.now();
 
+  var lastPaint = 0;
+  var minDelta = coarse ? 1000 / 30 : 0;   /* a slow wind does not need 60fps */
+
   function frame(now) {
     raf = 0;
+    if (running && visible) raf = requestAnimationFrame(frame);
+    if (minDelta && now - lastPaint < minDelta) return;
+    lastPaint = now;
+
     var t = (now - start) / 1000;
 
     if (!hasPointer) {
@@ -251,12 +281,10 @@
     gl.uniform1f(U.energy, energy);
     gl.clear(gl.COLOR_BUFFER_BIT);
     gl.drawArrays(gl.TRIANGLES, 0, 3);
-
-    if (running && visible) raf = requestAnimationFrame(frame);
   }
 
   function startLoop() {
-    if (running || still()) return;
+    if (running || reduced.matches) return;
     running = true;
     if (!raf) raf = requestAnimationFrame(frame);
   }
@@ -308,7 +336,7 @@
   });
 
   function applyMode() {
-    if (still()) { stopLoop(); resize(); drawOnce(); }
+    if (reduced.matches) { stopLoop(); resize(); drawOnce(); }
     else { startLoop(); }
   }
   if (reduced.addEventListener) reduced.addEventListener("change", applyMode);
