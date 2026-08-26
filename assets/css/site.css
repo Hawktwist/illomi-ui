@@ -230,7 +230,7 @@ section[id] { scroll-margin-top: var(--nav-h); }
   display: grid; gap: clamp(2rem, 6vh, 4rem);
 }
 .hero__title {
-  font-size: clamp(2.75rem, 10.4vw, 9.5rem);
+  font-size: clamp(2.4rem, 9.7vw, 9.5rem);
   max-width: 18ch;
 }
 .hero__foot {

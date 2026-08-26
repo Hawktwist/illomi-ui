@@ -46,6 +46,11 @@ seven stops in both appearances the worst case is 5.20:1.
 **One typeface.** Archivo, using its width axis: expanded at `wdth 115` for
 display, normal for body.
 
+**One CTA label.** Every contact affordance on the page says **Contact Us**,
+in the nav, the hero, all four tiers and the form button. One label per intent
+is the rule; if you add another entry point, use that same wording rather than
+a synonym.
+
 **One theme at a time, following the system.** Auto, Light and Dark cycle from
 the footer control. Auto is a real state, so the stored key is *removed* rather
 than set to `"auto"`.
