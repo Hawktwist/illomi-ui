@@ -148,6 +148,9 @@
         } catch (e) { /* private mode */ }
       }
       if (window.IllomiHero) window.IllomiHero.refresh();
+      /* var hoisting means this is simply undefined on the first pass, before
+         the footer wordmark has been built */
+      if (wordmark) wordmark.refresh();
     }
 
     apply(current(), false);
@@ -591,6 +594,158 @@
       if (e.key === "Escape" && open) hide(false);
     });
     window.addEventListener("popstate", function () { if (open) hide(true); });
+  })();
+
+  /* ======================================================================
+     the live footer wordmark
+
+     The same dot field as the hero, masked to the letterforms, running the
+     same wind. It is a TRANSPARENT canvas that only paints dots, so the page
+     background shows through and it is correct in light and dark without ever
+     asking which one is active. The two colours come from the same tokens the
+     hero reads, and are re-read when the appearance changes.
+
+     The letterforms are not rasterised here: canvas 2D ignores
+     font-variation-settings, so it would quietly render Archivo at the default
+     width. The coverage grid in wordmark-data.js was baked with the axes
+     honoured, which is what keeps this identical to the GIF.
+     ====================================================================== */
+  var wordmark = (function () {
+    var data = window.IllomiWordmark;
+    var canvas = document.getElementById("foot-canvas");
+    var mark = document.getElementById("foot-mark");
+    if (!data || !canvas || !mark) return null;
+    var ctx = canvas.getContext && canvas.getContext("2d");
+    if (!ctx) return null;                       /* plain text stays */
+
+    var cells = [];
+    for (var i = 0; i < data.grid.length; i++) {
+      var v = data.grid.charCodeAt(i) - 48;
+      if (v > 0) cells.push([i % data.cols, (i / data.cols) | 0, v / 9]);
+    }
+    if (!cells.length) return null;
+
+    mark.style.setProperty("--mark-aspect", data.aspect);
+    root.classList.add("is-wordmark-live");
+
+    var W = 0, H = 0, cw = 0, ch = 0, dpr = 1, step = 1;
+    var LUT = [], LEVELS = 18, R0 = 0.14, R1 = 0.44;
+
+    function rgb(name) {
+      var s = getComputedStyle(root).getPropertyValue(name).trim();
+      if (s.charAt(0) === "#") {
+        if (s.length === 4) s = "#" + s[1] + s[1] + s[2] + s[2] + s[3] + s[3];
+        return [parseInt(s.substr(1, 2), 16), parseInt(s.substr(3, 2), 16), parseInt(s.substr(5, 2), 16)];
+      }
+      var m = s.match(/\d+(\.\d+)?/g) || [0, 0, 0];
+      return [+m[0], +m[1], +m[2]];
+    }
+
+    /* one colour string per light level, so the draw loop never builds strings */
+    function buildLUT() {
+      var dot = rgb("--dot-ink"), acc = rgb("--accent");
+      /* floor and radius are both per appearance: see --dot-min, --dot-r0 */
+      var cs = getComputedStyle(root);
+      var floor = parseFloat(cs.getPropertyValue("--dot-min")) || 0.6;
+      R0 = parseFloat(cs.getPropertyValue("--dot-r0")) || 0.14;
+      R1 = parseFloat(cs.getPropertyValue("--dot-r1")) || 0.44;
+      LUT = [];
+      for (var l = 0; l < LEVELS; l++) {
+        var t = l / (LEVELS - 1);
+        var mix = Math.max(0, Math.min(1, (t * 1.07 - 0.25) / 0.70));
+        var a = Math.min(1, floor + t * 1.07 * (1 - floor));
+        LUT.push("rgba(" + Math.round(dot[0] + (acc[0] - dot[0]) * mix) + "," +
+                 Math.round(dot[1] + (acc[1] - dot[1]) * mix) + "," +
+                 Math.round(dot[2] + (acc[2] - dot[2]) * mix) + "," + a.toFixed(3) + ")");
+      }
+    }
+
+    function resize() {
+      var r = canvas.getBoundingClientRect();
+      if (!r.width) return;
+      dpr = Math.min(window.devicePixelRatio || 1, coarse() ? 1.5 : 2);
+      W = Math.max(1, Math.round(r.width * dpr));
+      H = Math.max(1, Math.round(r.height * dpr));
+      canvas.width = W; canvas.height = H;
+      cw = W / data.cols; ch = H / data.rows;
+      /* The grid is fixed at 104 columns, so on a narrow footer the cells fall
+         under 3 CSS px and the letterforms turn to mush. Drop to every other
+         cell and double the dot instead, which keeps the halftone readable at
+         any width. */
+      step = (cw / dpr) < 3 ? 2 : 1;
+    }
+
+    function coarse() { return window.matchMedia("(pointer: coarse)").matches; }
+
+    var pointer = null;
+    mark.addEventListener("pointermove", function (e) {
+      if (coarse() || reduced.matches) return;
+      var r = canvas.getBoundingClientRect();
+      pointer = [(e.clientX - r.left) / r.width, (e.clientY - r.top) / r.height];
+    }, { passive: true });
+    mark.addEventListener("pointerleave", function () { pointer = null; });
+
+    var RATE_X = 0.55, RATE_Y = 0.28;
+    function paint(t) {
+      ctx.clearRect(0, 0, W, H);
+      var aspect = 1 / data.aspect;
+      for (var i = 0; i < cells.length; i++) {
+        var gx = cells[i][0], gy = cells[i][1], cover = cells[i][2];
+        if (step > 1 && ((gx % step) || (gy % step))) continue;
+        var u = (gx + 0.5) / data.cols, v = (gy + 0.5) / data.rows;
+        var phase = u * 8.0 - t * RATE_X + Math.sin(v * 5.5 + t * RATE_Y) * 0.9;
+        var gust = Math.sin(phase) * 0.5 + 0.5;
+        var light = 0.12 + gust * gust * 0.95;
+
+        if (pointer) {                            /* the interactive part */
+          var dx = (u - pointer[0]) * aspect, dy = v - pointer[1];
+          light += Math.exp(-(dx * dx + dy * dy) * 9.0) * 0.9;
+        }
+        if (light > 1.07) light = 1.07;
+
+        var sway = Math.sin(phase - 0.6) * 0.5 + 0.5;
+        var r = (R0 + light * R1) * cw * step * cover;
+        if (r < 0.3) continue;
+        ctx.fillStyle = LUT[Math.min(LEVELS - 1, Math.max(0, Math.round(light / 1.07 * (LEVELS - 1))))];
+        ctx.beginPath();
+        ctx.arc((gx + 0.5) * cw + (sway - 0.5) * cw * 0.34,
+                (gy + 0.5) * ch + (sway - 0.5) * ch * 0.08, r, 0, 6.2832);
+        ctx.fill();
+      }
+    }
+
+    var raf = 0, visible = false, start = 0, lastPaint = 0;
+    function frame(now) {
+      raf = 0;
+      if (visible && !reduced.matches) raf = requestAnimationFrame(frame);
+      var minDelta = coarse() ? 1000 / 30 : 0;
+      if (minDelta && now - lastPaint < minDelta) return;
+      lastPaint = now;
+      if (!start) start = now;
+      paint((now - start) / 1000);
+    }
+
+    buildLUT();
+    resize();
+    paint(0);
+
+    if (window.ResizeObserver) new ResizeObserver(function () { resize(); paint(0); }).observe(canvas);
+    else window.addEventListener("resize", function () { resize(); paint(0); });
+
+    if (window.IntersectionObserver) {
+      new IntersectionObserver(function (e) {
+        visible = e[0].isIntersecting;
+        if (visible && !raf && !reduced.matches) raf = requestAnimationFrame(frame);
+        else if (!visible && raf) { cancelAnimationFrame(raf); raf = 0; }
+      }, { threshold: 0 }).observe(canvas);
+    } else { visible = true; raf = requestAnimationFrame(frame); }
+
+    document.addEventListener("visibilitychange", function () {
+      if (document.hidden && raf) { cancelAnimationFrame(raf); raf = 0; }
+      else if (!document.hidden && visible && !raf && !reduced.matches) raf = requestAnimationFrame(frame);
+    });
+
+    return { refresh: function () { buildLUT(); resize(); paint(lastPaint ? (lastPaint - start) / 1000 : 0); } };
   })();
 
   /* ======================================================================

@@ -253,7 +253,10 @@
 
 <footer class="foot">
   <div class="foot__inner">
-    <p class="foot__word">Illomi</p>
+    <div class="foot__mark" id="foot-mark">
+      <p class="foot__word">Illomi</p>
+      <canvas class="foot__canvas" id="foot-canvas" aria-hidden="true"></canvas>
+    </div>
     <nav class="foot__links" aria-label="Footer">
       <a href="#work">Work</a>
       <a href="#services">Services</a>
@@ -286,6 +289,7 @@
 
 <div class="grain" aria-hidden="true"></div>
 
+<script src="assets/js/wordmark-data.js" defer></script>
 <script src="assets/js/hero-gl.js" defer></script>
 <script src="assets/js/app.js" defer></script>
 </body>

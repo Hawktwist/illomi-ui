@@ -187,11 +187,43 @@ margin removed so it reads as one price rather than two words.
 | WebGL hero field | A rigid grid lit by a moving source. The pointer is the light |
 | Statement fill | The sentence lights word by word at reading pace |
 | Pinned horizontal pan | Five example sites read as one gesture |
+| Live footer wordmark | The dot field again, masked to the letterforms. Ambient wind, and it lights under the pointer |
 | Preview scan | The pointer's vertical position is the preview's scroll position |
 | Drifting rules | Every services row rule is a slow moving band of the spectrum |
 | Lit row | The row at the reading line brightens its rule and takes a colour wash |
 | Flown service names | The list flies in as a staggered wave, settles, and flies out into the plans |
 | Plan fill | The same word-by-word light, applied to the four tiers |
+
+### The live footer wordmark
+
+The word at the bottom of the page is the same dot field as the hero, masked to
+the letterforms, running the same wind, and lighting under the pointer.
+
+It is a **transparent** canvas that only paints dots. Nothing clears a
+background colour, so the page shows through and it is correct in light and
+dark without ever asking which one is active. The two colours are read from
+`--text-2` and `--accent`, and re-read when the appearance changes.
+
+The letterforms are **not** rasterised in the browser. Canvas 2D silently
+ignores `font-variation-settings`, so drawing the text at runtime would render
+Archivo at the default width and quietly fail to match either the GIF or the
+site's own wordmark. `assets/js/wordmark-data.js` is generated offline with the
+axes honoured: a 104 by 34 coverage grid, one digit per cell, 3.9 KB.
+
+Three things keep it honest:
+
+- The real `<p>Illomi</p>` stays in the accessibility tree, clipped rather than
+  removed, so the footer still reads as a word.
+- Without JavaScript, or without a 2D context, the plain type shows exactly as
+  it did before.
+- The grid is fixed at 104 columns, so on a narrow footer the cells fall under
+  3px and the letters turn to mush. Below that it draws every other cell with
+  doubled dots instead. The mark's own lower size bound is raised for the same
+  reason: at the old mobile width of 137px a halftone is not perceptible, and
+  crisp type would have been the better answer.
+
+It only animates while on screen, which for a footer is most of the time not at
+all, and drops to a single static frame under `prefers-reduced-motion`.
 
 ### The flown type
 

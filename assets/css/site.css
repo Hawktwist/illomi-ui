@@ -24,6 +24,17 @@
   --line-strong: rgba(242, 241, 238, 0.32);
   --field-line: #85878F;   /* 5.5:1 on the page, WCAG wants 3:1 for controls */
   --accent:      #E9563A;
+  /* Floor opacity for a resting dot in the wordmark. A faint light dot on
+     near black still registers; a faint dark dot on paper does not, so the two
+     appearances genuinely need different floors. At the old shared 0.30 the
+     light mode matrix measured 1.53:1 and vanished. */
+  /* The wordmark's resting ink. Dark keeps what --text-2 already gave it.
+     --dot-r0/r1 are the dot radius as a fraction of the cell, at rest and
+     at full light. On black the wide swing is the glow, so it stays. */
+  --dot-ink:     #9A9DA4;
+  --dot-min:     0.66;
+  --dot-r0:      0.14;
+  --dot-r1:      0.44;
   --grain-op:    0.05;
 
   --nav-h: 64px;
@@ -55,6 +66,17 @@
   --line-strong: rgba(16, 17, 19, 0.38);
   --field-line: #6B6E75;
   --accent:      #B33D26;
+  /* Paper needs a much darker resting dot than --text-2 (#5B5F66) gave:
+     that measured 3.0:1 and read as grey mist.
+     The bigger point: on black a partly lit field reads as glow, on
+     paper the same unevenness reads as a printing fault, half the word
+     solid and half washed out. So here the ink is held at full density
+     and the radius swing is compressed, which leaves the wind to travel
+     as hue, grey to accent. That is what keeps the word one object. */
+  --dot-ink:     #2E3238;
+  --dot-min:     1.00;
+  --dot-r0:      0.26;
+  --dot-r1:      0.18;
   --grain-op:    0.035;
   color-scheme: light;
 }
@@ -68,6 +90,10 @@
     --line-strong: rgba(16, 17, 19, 0.38);
     --field-line: #6B6E75;
     --accent:      #B33D26;
+    --dot-ink:     #2E3238;   /* see the note on the light block above */
+    --dot-min:     1.00;
+    --dot-r0:      0.26;
+    --dot-r1:      0.18;
     --grain-op:    0.035;
     color-scheme: light;
   }
@@ -519,6 +545,31 @@ section[id] { scroll-margin-top: var(--nav-h); }
   display: grid; gap: clamp(2rem, 5vh, 3.5rem);
 }
 .foot__word { font-size: clamp(3rem, 13vw, 11rem); line-height: 0.82; }
+
+/* The live wordmark. The canvas is TRANSPARENT and only paints dots, so the
+   page background shows through it and it is correct in both appearances
+   without knowing which one is active. Colours come from the same two tokens
+   the hero field uses. Without JS the plain text stays exactly as it was. */
+.foot__mark { position: relative; }
+.foot__canvas { display: none; }
+.is-wordmark-live .foot__mark {
+  /* On desktop this is the size the text wordmark was: its advance is 2.7em
+     at the very same clamp, so nothing in the footer moves. The lower bound is
+     raised from 3rem because at the old mobile size the mark was 137px wide,
+     where a halftone is not perceptible and the plain type would have been
+     better. It needs room to be worth doing. */
+  width: min(92%, calc(2.7 * clamp(6rem, 13vw, 11rem)));
+  aspect-ratio: 1 / var(--mark-aspect, 0.322);
+}
+.is-wordmark-live .foot__canvas {
+  display: block; position: absolute; inset: 0;
+  width: 100%; height: 100%;
+}
+/* kept in the accessibility tree, taken out of the picture */
+.is-wordmark-live .foot__word {
+  position: absolute; width: 1px; height: 1px; overflow: hidden;
+  clip-path: inset(50%); white-space: nowrap;
+}
 .foot__links { display: flex; flex-wrap: wrap; gap: 0.5rem 2rem; }
 .foot__links a { color: var(--text-2); font-size: 0.98rem; transition: color 0.3s var(--ease); }
 .foot__links a:hover { color: var(--text); }
