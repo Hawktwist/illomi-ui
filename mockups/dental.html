@@ -1,9 +1,9 @@
 <!doctype html>
 <html lang="en"><head><meta charset="utf-8"><title>Marisol Dental</title>
-<meta name="viewport" content="width=1000">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <style>
 *,*::before,*::after{box-sizing:border-box}
-body{margin:0;width:1000px;background:#FBFCFD;color:#16232E;font-family:system-ui,Segoe UI,sans-serif}
+body{margin:0;width:100%;max-width:1000px;margin-inline:auto;background:#FBFCFD;color:#16232E;font-family:system-ui,Segoe UI,sans-serif}
 img{display:block;max-width:100%}
 a{text-decoration:none;color:inherit}
 h1,h2,h3,p,ul{margin:0}
@@ -36,6 +36,36 @@ footer{padding:44px 56px;color:#55697A;font-size:14px;display:flex;justify-conte
 .team p{margin-top:12px;font-weight:600;font-size:16px}
 .team small{color:#55697A;font-size:14px}
 
+
+.visit{padding:56px}
+.visit h2{font-size:34px;letter-spacing:-.025em;margin-bottom:28px}
+.vgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.vgrid div{border-left:2px solid #1E6B7B;padding:4px 0 4px 18px}
+.vgrid h3{font-size:18px}
+.vgrid p{margin-top:8px;color:#55697A;font-size:15px;line-height:1.55}
+.where{padding:0 56px 56px;display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.where div{background:#fff;border:1px solid #E4EBF0;border-radius:20px;padding:28px}
+.where h3{font-size:18px;margin-bottom:14px}
+.where .l{display:flex;justify-content:space-between;padding:11px 0;border-bottom:1px solid #EDF2F5;font-size:15px;color:#55697A}
+.where .l b{color:#16232E;font-weight:600}
+
+@media (max-width: 760px){
+  body{font-size:15px}
+  nav{flex-wrap:wrap;gap:10px}
+  nav ul{gap:16px;font-size:13px}
+  .hero{grid-template-columns:1fr !important;padding-left:24px;padding-right:24px}
+  .hero h1{font-size:40px !important}
+  .hero img{height:240px !important}
+  .cards,.grid,.svc,.team,.two,.gal,.visit .vgrid,.where,.vgrid{grid-template-columns:1fr !important}
+  .band,.sub,.hrs,.hours,.price,.fees,.menu,.book,.clients{
+    padding-left:24px !important;padding-right:24px !important}
+  .band,.sub,.hours,.hrs{flex-direction:column;align-items:flex-start;gap:18px;
+    grid-template-columns:1fr !important;text-align:left}
+  .band h2,.sub h2,.hrs h2,.hours h3{font-size:26px !important;max-width:none}
+  .fields{grid-template-columns:1fr !important}
+  .price{grid-template-columns:1fr !important}
+  footer{flex-direction:column;gap:8px;align-items:flex-start}
+}
 </style></head><body>
 
 <nav><span class="mark">Marisol Dental</span><ul><li>Treatments</li><li>New patients</li><li>Fees</li><li>Team</li></ul><a class="btn">Book online</a></nav>
@@ -67,6 +97,30 @@ footer{padding:44px 56px;color:#55697A;font-size:14px;display:flex;justify-conte
   <div><img loading="lazy" decoding="async" src="https://picsum.photos/seed/illomi-mock-dental-a/360/320" alt=""><p>Practice team</p><small>Four dentists, two hygienists</small></div>
   <div><img loading="lazy" decoding="async" src="https://picsum.photos/seed/illomi-mock-dental-b/360/320" alt=""><p>The building</p><small>Ground floor, step free</small></div>
   <div><img loading="lazy" decoding="async" src="https://picsum.photos/seed/illomi-mock-dental-c/360/320" alt=""><p>Evening clinic</p><small>Thursdays until 8pm</small></div>
+</section>
+<section class="visit">
+  <h2>What a first visit looks like.</h2>
+  <div class="vgrid">
+    <div><h3>Before you arrive</h3><p>The registration form is online, so nothing is filled in on a clipboard in the waiting room.</p></div>
+    <div><h3>The appointment</h3><p>Thirty minutes. A full look, photographs if they help, and an explanation before anything is done.</p></div>
+    <div><h3>Afterwards</h3><p>A written plan with the cost of each option, sent the same day. No decision needed in the chair.</p></div>
+  </div>
+</section>
+<section class="where">
+  <div>
+    <h3>Opening hours</h3>
+    <div class="l"><span>Monday to Wednesday</span><b>8am to 5pm</b></div>
+    <div class="l"><span>Thursday</span><b>8am to 8pm</b></div>
+    <div class="l"><span>Friday</span><b>8am to 4pm</b></div>
+    <div class="l"><span>Saturday</span><b>9am to 1pm</b></div>
+  </div>
+  <div>
+    <h3>Finding the practice</h3>
+    <div class="l"><span>Address</span><b>14 Prospect Row</b></div>
+    <div class="l"><span>Access</span><b>Ground floor, step free</b></div>
+    <div class="l"><span>Parking</span><b>Free, two hours</b></div>
+    <div class="l"><span>Emergencies</span><b>Call before 9am</b></div>
+  </div>
 </section>
 <footer><span>Marisol Dental</span><span>14 Prospect Row</span><span>Mon to Sat</span></footer>
 

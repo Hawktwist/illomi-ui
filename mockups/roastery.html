@@ -1,9 +1,9 @@
 <!doctype html>
 <html lang="en"><head><meta charset="utf-8"><title>Kestrel Roasting Co.</title>
-<meta name="viewport" content="width=1000">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <style>
 *,*::before,*::after{box-sizing:border-box}
-body{margin:0;width:1000px;background:#FFFDF9;color:#241C16;font-family:system-ui,Segoe UI,sans-serif}
+body{margin:0;width:100%;max-width:1000px;margin-inline:auto;background:#FFFDF9;color:#241C16;font-family:system-ui,Segoe UI,sans-serif}
 img{display:block;max-width:100%}
 a{text-decoration:none;color:inherit}
 h1,h2,h3,p,ul{margin:0}
@@ -29,6 +29,39 @@ nav ul{display:flex;gap:26px;color:#6B5B4C}
 .sub a{background:#E0A458;color:#241C16;padding:15px 28px;border-radius:4px;font-weight:800;font-size:15px;justify-self:end}
 footer{padding:40px 52px;border-top:1px solid #EBE2D6;color:#6B5B4C;font-size:14px;display:flex;justify-content:space-between}
 
+
+.roast{padding:56px 52px;border-top:1px solid #EBE2D6;display:grid;grid-template-columns:.9fr 1.1fr;gap:44px;align-items:center}
+.roast img{width:100%;height:300px;object-fit:cover;border-radius:6px}
+.roast h2{font-size:40px;letter-spacing:-.03em;line-height:1.05;max-width:15ch}
+.roast p{margin-top:16px;color:#6B5B4C;font-size:16px;line-height:1.65;max-width:44ch}
+.brew{padding:56px 52px;border-top:1px solid #EBE2D6}
+.brew h2{font-size:15px;letter-spacing:.14em;text-transform:uppercase;color:#C9552F;margin-bottom:24px}
+.bgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+.bgrid div{border-top:2px solid #241C16;padding-top:16px}
+.bgrid h3{font-size:19px}
+.bgrid p{margin-top:8px;color:#6B5B4C;font-size:15px;line-height:1.55}
+.bgrid span{display:block;margin-top:12px;font-weight:800;font-size:14px}
+.trade{margin:0 52px 56px;border:2px solid #241C16;border-radius:8px;padding:32px;display:flex;justify-content:space-between;align-items:center;gap:24px}
+.trade p{font-size:20px;letter-spacing:-.02em;max-width:38ch}
+.trade span{background:#241C16;color:#FFFDF9;padding:13px 24px;border-radius:4px;font-weight:800;font-size:14px;white-space:nowrap}
+
+@media (max-width: 760px){
+  body{font-size:15px}
+  nav{flex-wrap:wrap;gap:10px}
+  nav ul{gap:16px;font-size:13px}
+  .hero{grid-template-columns:1fr !important;padding-left:24px;padding-right:24px}
+  .hero h1{font-size:40px !important}
+  .hero img{height:240px !important}
+  .cards,.grid,.svc,.team,.two,.gal,.roast,.bgrid,.trade{grid-template-columns:1fr !important}
+  .band,.sub,.hrs,.hours,.price,.fees,.menu,.book,.clients{
+    padding-left:24px !important;padding-right:24px !important}
+  .band,.sub,.hours,.hrs{flex-direction:column;align-items:flex-start;gap:18px;
+    grid-template-columns:1fr !important;text-align:left}
+  .band h2,.sub h2,.hrs h2,.hours h3{font-size:26px !important;max-width:none}
+  .fields{grid-template-columns:1fr !important}
+  .price{grid-template-columns:1fr !important}
+  footer{flex-direction:column;gap:8px;align-items:flex-start}
+}
 </style></head><body>
 
 <nav><span class="mark">Kestrel Roasting Co.</span><ul><li>Coffee</li><li>Subscriptions</li><li>Wholesale</li><li>About</li></ul><a class="cart">Basket</a></nav>
@@ -48,6 +81,26 @@ footer{padding:40px 52px;border-top:1px solid #EBE2D6;color:#6B5B4C;font-size:14
 <section class="sub">
   <div><h2>Pick a bag, pick a week, forget about it.</h2><p>Change the roast, skip a delivery or stop entirely from one page. No account needed.</p></div>
   <a>Start a subscription</a>
+</section>
+<section class="roast">
+  <img loading="lazy" decoding="async" src="https://picsum.photos/seed/illomi-mock-roast-arch/420/300" alt="">
+  <div>
+    <h2>One drum, one person watching it.</h2>
+    <p>Everything is roasted on a twelve kilo drum in the arch. Small batches mean we can stop a roast on the day it tastes right rather than on a schedule.</p>
+    <p>Bags are filled the morning they ship, and the roast date is printed on every one.</p>
+  </div>
+</section>
+<section class="brew">
+  <h2>Getting the best from it</h2>
+  <div class="bgrid">
+    <div><h3>Filter</h3><p>Sixty grams per litre, water just off the boil, poured in three stages.</p><span>3 minutes</span></div>
+    <div><h3>Espresso</h3><p>Eighteen in, thirty six out. Start there and adjust the grind, not the dose.</p><span>28 seconds</span></div>
+    <div><h3>Cafetiere</h3><p>Coarse grind, four minutes, break the crust and skim before pouring.</p><span>4 minutes</span></div>
+  </div>
+</section>
+<section class="trade">
+  <p>We supply about thirty cafes and offices. Wholesale pricing starts at six kilos a month.</p>
+  <span>Talk to us</span>
 </section>
 <footer><span>Kestrel Roasting Co.</span><span>Arch 12, Sidings Road</span><span>Free shipping over 30</span></footer>
 

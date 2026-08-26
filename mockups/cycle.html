@@ -1,9 +1,9 @@
 <!doctype html>
 <html lang="en"><head><meta charset="utf-8"><title>Rivet Cycle Works</title>
-<meta name="viewport" content="width=1000">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <style>
 *,*::before,*::after{box-sizing:border-box}
-body{margin:0;width:1000px;background:#0E0E0E;color:#EDEDED;font-family:Arial,Helvetica,sans-serif}
+body{margin:0;width:100%;max-width:1000px;margin-inline:auto;background:#0E0E0E;color:#EDEDED;font-family:Arial,Helvetica,sans-serif}
 img{display:block;max-width:100%}
 a{text-decoration:none;color:inherit}
 h1,h2,h3,p,ul{margin:0}
@@ -35,6 +35,33 @@ nav ul{display:flex;gap:26px}
 .hrs p{color:#9E9E9E;font-size:15px;line-height:1.7;text-align:right}
 footer{padding:34px 48px;border-top:1px solid #262626;color:#7A7A7A;font-size:13px;text-transform:uppercase;letter-spacing:.1em}
 
+
+.about{padding:56px 48px;border-top:1px solid #262626;display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:start}
+.about h2{font-size:46px;text-transform:uppercase;font-weight:800;letter-spacing:-.03em;line-height:.95}
+.about p{color:#9E9E9E;font-size:16px;line-height:1.65;max-width:44ch}
+.about p+p{margin-top:14px}
+.brands{padding:48px;border-top:1px solid #262626}
+.brands h2{font-size:13px;letter-spacing:.16em;text-transform:uppercase;color:#FF5B1F;margin-bottom:26px}
+.blist{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:#262626;border:1px solid #262626}
+.blist span{background:#0E0E0E;padding:20px 16px;font-size:14px;text-transform:uppercase;letter-spacing:.08em}
+
+@media (max-width: 760px){
+  body{font-size:15px}
+  nav{flex-wrap:wrap;gap:10px}
+  nav ul{gap:16px;font-size:13px}
+  .hero{grid-template-columns:1fr !important;padding-left:24px;padding-right:24px}
+  .hero h1{font-size:40px !important}
+  .hero img{height:240px !important}
+  .cards,.grid,.svc,.team,.two,.gal,.about,.blist{grid-template-columns:1fr !important}
+  .band,.sub,.hrs,.hours,.price,.fees,.menu,.book,.clients{
+    padding-left:24px !important;padding-right:24px !important}
+  .band,.sub,.hours,.hrs{flex-direction:column;align-items:flex-start;gap:18px;
+    grid-template-columns:1fr !important;text-align:left}
+  .band h2,.sub h2,.hrs h2,.hours h3{font-size:26px !important;max-width:none}
+  .fields{grid-template-columns:1fr !important}
+  .price{grid-template-columns:1fr !important}
+  footer{flex-direction:column;gap:8px;align-items:flex-start}
+}
 </style></head><body>
 
 <nav><span class="mark">Rivet Cycle Works</span><ul><li>Repairs</li><li>Fittings</li><li>Workshop</li><li>Contact</li></ul></nav>
@@ -66,6 +93,20 @@ footer{padding:34px 48px;border-top:1px solid #262626;color:#7A7A7A;font-size:13
 <section class="hrs">
   <h2>Drop in.<br>No appointment<br>for small jobs.</h2>
   <p>Mon to Fri, 8 until 6<br>Saturday, 9 until 4<br>Closed Sunday</p>
+</section>
+<section class="about">
+  <h2>Two people,<br>one stand,<br>no upselling.</h2>
+  <div>
+    <p>The workshop has been on Canal Yard since 2016. We service everything that rolls in, from carbon race bikes to the shopper that has not been touched in a decade.</p>
+    <p>If a part still has life in it we will say so. If a repair is not worth the money on that frame we will say that too, and you will not be charged for the look.</p>
+  </div>
+</section>
+<section class="brands">
+  <h2>Regularly through the door</h2>
+  <div class="blist">
+    <span>Shimano</span><span>SRAM</span><span>Campagnolo</span><span>Hope</span>
+    <span>Brompton</span><span>Bosch e-systems</span><span>Rohloff</span><span>Chris King</span>
+  </div>
 </section>
 <footer>Rivet Cycle Works &nbsp; Mon to Sat &nbsp; Unit 4, Canal Yard</footer>
 

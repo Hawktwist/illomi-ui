@@ -299,8 +299,25 @@
     var k = w / 1000;
     scroll.style.setProperty("--k", k.toFixed(4));
     scroll.style.setProperty("--h", contentH + "px");
+    /* how far the preview can travel before it runs out of page */
     scroll.style.setProperty("--play", Math.max(0, Math.round(contentH * k - hgt)) + "px");
   }
+
+  /* Only the previews actually on screen animate. The rail is horizontal, so
+     most cards sit off to one side, and a CSS animation keeps running for
+     off screen elements unless something stops it. */
+  (function playWhenSeen() {
+    var cards = document.querySelectorAll(".proj");
+    if (!cards.length) return;
+    if (!window.IntersectionObserver) {
+      Array.prototype.forEach.call(cards, function (c) { c.classList.add("is-onscreen"); });
+      return;
+    }
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) { e.target.classList.toggle("is-onscreen", e.isIntersecting); });
+    }, { root: null, rootMargin: "10% 15%", threshold: 0 });
+    Array.prototype.forEach.call(cards, function (c) { io.observe(c); });
+  })();
 
   /* re-fit once each embedded page has actually loaded */
   Array.prototype.forEach.call(document.querySelectorAll(".proj__scroll iframe"), function (f) {
@@ -497,41 +514,83 @@
   })();
 
   /* ======================================================================
-     scan a preview with the pointer
+     the example sites, opened full screen
 
-     The preview used to crawl upward on hover. That moved the design away
-     from the pointer that arrived to read it, which is backwards, and six
-     seconds of linear travel is not an animation, it is a wait. Now the
-     pointer's vertical position IS the scroll position: move down the card to
-     go down the page, move back up to return. The visitor is in control.
+     Previews are static. Clicking one opens the real page full screen where it
+     can be scrolled properly, which is the point of shipping real pages rather
+     than screenshots.
+
+     Getting out again is deliberately over provided for, because a full screen
+     iframe on a phone is the easiest place on the web to feel trapped:
+       a 48px labelled Close button, always visible in the bar
+       the Escape key
+       the phone's own back gesture, via a history entry
      ====================================================================== */
-  (function scan() {
-    if (!window.matchMedia("(hover: hover) and (pointer: fine)").matches) return;
+  (function viewer() {
+    var box = document.getElementById("viewer");
+    var frame = document.getElementById("viewer-site");
+    var title = document.getElementById("viewer-title");
+    var closeBtn = document.getElementById("viewer-close");
+    if (!box || !frame || !closeBtn) return;
 
-    Array.prototype.forEach.call(document.querySelectorAll(".proj__frame"), function (frame) {
-      var scroll = frame.querySelector(".proj__scroll");
-      if (!scroll) return;
-      var play = 0, rect = null;
+    var opener = null;
+    var open = false;
+    var hideTimer = 0;
 
-      frame.addEventListener("pointerenter", function () {
-        if (reduced.matches) return;
-        play = parseFloat(getComputedStyle(scroll).getPropertyValue("--play")) || 0;
-        rect = frame.getBoundingClientRect();
-        if (play) scroll.classList.add("is-scanning");
-      });
+    function show(src, name, el) {
+      opener = el || null;
+      title.textContent = name;
+      frame.setAttribute("title", name + ", example site");
+      frame.setAttribute("src", src);
+      box.hidden = false;
+      document.body.style.overflow = "hidden";
+      open = true;
+      /* read a layout property so the browser commits the hidden -> shown
+         change before the class lands, otherwise there is nothing to
+         transition from and the panel just appears */
+      void box.offsetHeight;
+      box.classList.add("is-open");
+      closeBtn.focus();
+      /* a history entry so the back gesture closes the viewer rather than
+         leaving the site altogether */
+      try { history.pushState({ illomiViewer: true }, ""); } catch (e) { /* file:// */ }
+    }
 
-      frame.addEventListener("pointermove", function (e) {
-        if (reduced.matches || !play || !rect) return;
-        var p = (e.clientY - rect.top) / rect.height;
-        p = p < 0 ? 0 : (p > 1 ? 1 : p);
-        scroll.style.transform = "translate3d(0," + (-play * p).toFixed(1) + "px,0)";
-      }, { passive: true });
+    function hide(fromPop) {
+      if (!open) return;
+      open = false;
+      box.classList.remove("is-open");
+      document.body.style.overflow = "";
 
-      frame.addEventListener("pointerleave", function () {
-        scroll.classList.remove("is-scanning");
-        scroll.style.transform = "";
+      /* let the panel animate out before it leaves the tree. The timeout is
+         the authority, not transitionend, which never fires under reduced
+         motion or if the layer is offscreen. */
+      window.clearTimeout(hideTimer);
+      hideTimer = window.setTimeout(function () {
+        box.hidden = true;
+        frame.removeAttribute("src");        /* stop it loading in the background */
+      }, reduced.matches ? 0 : 460);
+      if (opener) { opener.focus(); opener = null; }
+      if (!fromPop) {
+        try {
+          if (history.state && history.state.illomiViewer) history.back();
+        } catch (e) { /* nothing to go back to */ }
+      }
+    }
+
+    Array.prototype.forEach.call(document.querySelectorAll(".proj__open"), function (btn) {
+      btn.addEventListener("click", function () {
+        show(btn.getAttribute("data-site"), btn.getAttribute("data-title"), btn);
       });
     });
+
+    closeBtn.addEventListener("click", function () { hide(false); });
+    var scrim = document.getElementById("viewer-scrim");
+    if (scrim) scrim.addEventListener("click", function () { hide(false); });
+    document.addEventListener("keydown", function (e) {
+      if (e.key === "Escape" && open) hide(false);
+    });
+    window.addEventListener("popstate", function () { if (open) hide(true); });
   })();
 
   /* ======================================================================

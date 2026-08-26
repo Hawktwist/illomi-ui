@@ -1,9 +1,9 @@
 <!doctype html>
 <html lang="en"><head><meta charset="utf-8"><title>Copperline Barbers</title>
-<meta name="viewport" content="width=1000">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <style>
 *,*::before,*::after{box-sizing:border-box}
-body{margin:0;width:1000px;background:#F5F3EE;color:#111;font-family:Arial,Helvetica,sans-serif}
+body{margin:0;width:100%;max-width:1000px;margin-inline:auto;background:#F5F3EE;color:#111;font-family:Arial,Helvetica,sans-serif}
 img{display:block;max-width:100%}
 a{text-decoration:none;color:inherit}
 h1,h2,h3,p,ul{margin:0}
@@ -26,6 +26,35 @@ nav ul{display:flex;gap:24px}
 .hours span{font-size:15px;color:#A9A9A9}
 footer{padding:36px 50px;font-size:13px;text-transform:uppercase;letter-spacing:.1em;color:#6A6A6A;display:flex;justify-content:space-between}
 
+
+.chairs{padding:56px 50px;border-top:1px solid #DEDAD1}
+.chairs h2{font-size:15px;text-transform:uppercase;letter-spacing:.16em;color:#8A8A8A;margin-bottom:24px}
+.cgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:20px}
+.cgrid img{width:100%;height:200px;object-fit:cover}
+.cgrid .ph{width:100%;height:200px;background:#E6E2D9}
+.cgrid h3{margin-top:14px;font-size:18px;font-weight:900;text-transform:uppercase;letter-spacing:-.01em}
+.cgrid p{margin-top:4px;font-size:14px;color:#6A6A6A}
+.find{padding:56px 50px;border-top:1px solid #DEDAD1;display:grid;grid-template-columns:1fr 1fr;gap:60px}
+.find h3{font-size:15px;text-transform:uppercase;letter-spacing:.16em;color:#8A8A8A;margin-bottom:20px}
+.find .l{display:flex;justify-content:space-between;padding:14px 0;border-bottom:1px solid #DEDAD1;font-size:17px}
+
+@media (max-width: 760px){
+  body{font-size:15px}
+  nav{flex-wrap:wrap;gap:10px}
+  nav ul{gap:16px;font-size:13px}
+  .hero{grid-template-columns:1fr !important;padding-left:24px;padding-right:24px}
+  .hero h1{font-size:40px !important}
+  .hero img{height:240px !important}
+  .cards,.grid,.svc,.team,.two,.gal,.cgrid,.chairs .cgrid,.find{grid-template-columns:1fr !important}
+  .band,.sub,.hrs,.hours,.price,.fees,.menu,.book,.clients{
+    padding-left:24px !important;padding-right:24px !important}
+  .band,.sub,.hours,.hrs{flex-direction:column;align-items:flex-start;gap:18px;
+    grid-template-columns:1fr !important;text-align:left}
+  .band h2,.sub h2,.hrs h2,.hours h3{font-size:26px !important;max-width:none}
+  .fields{grid-template-columns:1fr !important}
+  .price{grid-template-columns:1fr !important}
+  footer{flex-direction:column;gap:8px;align-items:flex-start}
+}
 </style></head><body>
 
 <nav><span class="mark">Copperline</span><ul><li>Cuts</li><li>Prices</li><li>Find us</li></ul></nav>
@@ -43,6 +72,29 @@ footer{padding:36px 50px;font-size:13px;text-transform:uppercase;letter-spacing:
 <section class="hours">
   <h3>Open until 7pm, Tuesday to Saturday.</h3>
   <span>Closed Sunday and Monday</span>
+</section>
+<section class="chairs">
+  <h2>The chairs</h2>
+  <div class="cgrid">
+    <div><img loading="lazy" decoding="async" src="https://picsum.photos/seed/illomi-mock-barber-a/300/360" alt=""><h3>Chair one</h3><p>Skin fades and clipper work</p></div>
+    <div><img loading="lazy" decoding="async" src="https://picsum.photos/seed/illomi-mock-barber-b/300/360" alt=""><h3>Chair two</h3><p>Scissor cuts, longer styles</p></div>
+    <div><div class="ph"></div><h3>Chair three</h3><p>Beards and hot towel shaves</p></div>
+    <div><div class="ph"></div><h3>Chair four</h3><p>Kept free for walk ins</p></div>
+  </div>
+</section>
+<section class="find">
+  <div>
+    <h3>Opening</h3>
+    <div class="l"><span>Tuesday to Friday</span><span>9am until 7pm</span></div>
+    <div class="l"><span>Saturday</span><span>8am until 5pm</span></div>
+    <div class="l"><span>Sunday and Monday</span><span>Closed</span></div>
+  </div>
+  <div>
+    <h3>Where</h3>
+    <div class="l"><span>Address</span><span>31 Copperline Street</span></div>
+    <div class="l"><span>Walk ins</span><span>Two chairs kept free</span></div>
+    <div class="l"><span>Cash and card</span><span>Both fine</span></div>
+  </div>
 </section>
 <footer><span>Copperline Barbers</span><span>31 Copperline Street</span></footer>
 

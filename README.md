@@ -70,22 +70,109 @@ Open `mockups/cycle.html` on its own and it is just a website.
 | Design width | Every mockup is authored at 1000px wide |
 | Height | Read from the embedded page, not assumed. They run 1385px to 1982px |
 | Scaling | JS measures the frame and sets `--k` (frame width / 1000) |
-| Scan | Moving the pointer down a card scrolls that site down. The visitor drives it |
-| Pointer | `pointer-events: none` on every frame, so drag gestures reach the rail |
+| Preview | The page plays: a slow scroll down, a hold, and back. 13s, staggered per card |
+| Opening | Each card carries a real `<button>`. Clicking layers the page over the site |
+| Pointer | `pointer-events: none` on the previews, so drag gestures reach the rail |
 | Focus | `tabindex="-1"`, and the mockups contain no `href`, so nothing inside is tabbable |
+
+### The previews play
+
+Each card slowly scrolls its page down, holds, and returns, on a 13 second
+loop staggered per card so the five are never in lockstep. It is a **pure
+transform keyframe animation**, so it lives on the compositor rather than
+costing a JS write per frame, and it **pauses under the pointer**: hovering a
+card now stops it instead of sliding the design away from you, which was the
+complaint about the old hover-scroll.
+
+Two things keep it honest:
+
+- The frames are **4:3, not 4:5**. At 4:5 the frame was nearly as tall as the
+  scaled page, leaving 13px of travel on the shorter mockups, which is not
+  motion. Landscape gives 193px to 375px and reads more like a website.
+- Only cards **actually on screen** animate, via an IntersectionObserver
+  toggling `.is-onscreen`. The rail is horizontal, so most cards sit off to one
+  side, and a CSS animation happily keeps running for off screen elements.
+
+### The example sites are responsive
+
+The mockups used to be fixed 1000px designs with `<meta viewport content="width=1000">`.
+In the viewer that left a column of dead space beside them on a wide screen and
+forced horizontal scrolling on a phone, and it made the media queries
+unreachable because the layout viewport was pinned.
+
+They are fluid now: `width: 100%; max-width: 1000px; margin-inline: auto`, a
+free viewport meta, and a narrow layout under 760px. Because the **card**
+preview's iframe element is explicitly 1000px wide, the card still renders the
+desktop layout while the viewer renders whatever its own width calls for. One
+set of files, both jobs.
+
+### The viewer chrome
+
+**One documented shape exception.** Page content is radius 0 everywhere. The
+viewer is chrome floating *over* the page rather than part of it, so it gets
+its own material: a `--r-chrome: 18px` radius, translucent, blurred. Nothing
+outside `.viewer` may use that token, and an audit check enforces it. Treating
+it as a rule rather than rounding one element on a whim is what keeps the shape
+system coherent.
+
+The bar is **70% of the page colour with a 20px blur**, and the panel behind it
+is transparent, which is what lets it actually read as glass: it floats on the
+blurred site rather than on an opaque slab. There is still no drop shadow. A
+filled pill and a black shadow were the two things this design system does not
+have anywhere, and they were why the viewer once read as a generic modal.
+
+Translucency is a contrast risk, so the 70% figure is measured rather than
+picked: against the worst possible backdrop behind the bar (pure white in dark
+mode, pure black in light mode) the Close label still reads at **6.84:1**.
+`prefers-reduced-transparency` drops the blur for a solid fill.
+
+Close is a **rule**, like every other affordance here: the word, with a line
+under it that retracts right while an accent line grows in from the left. Its
+padding gives a 50px target on a phone while the rule stays tight under the
+word. The title is set in the page's display face rather than as modal chrome,
+and the iframe sits on `--bg-2` so there is no white flash before an embedded
+page paints.
+
+### The viewer is a layer, not a takeover
+
+Clicking a card does not navigate. A panel opens **over** the page: the site
+stays visible behind a translucent, blurred scrim, and the panel is inset so
+you can see the page around all four edges. It grows in rather than appearing,
+and it is a real `role="dialog"` with `aria-modal`.
+
+A full screen iframe on a phone is the easiest place on the web to feel
+trapped, so there are **four** ways out and all of them work:
+
+- a 48px **labelled** Close button in the bar
+- tapping the scrim, which is the most natural one on a phone
+- the Escape key
+- the phone's own back gesture, via a pushed history entry
+
+Closing also clears the iframe `src` so the embedded page stops loading in the
+background, and returns focus to the card that opened it. The back handling is
+guarded: it only calls `history.back()` when it can see its own state entry, so
+if `pushState` was refused the close button can never navigate off the site.
 
 ## Partnered Plans
 
-Four tiers, described by **pages and edits**, with **no prices on the site at
-all**: pricing is a conversation. Each tier's line uses the scroll fill, so the
-plans light up word by word as you read down them.
+Four tiers, priced monthly, described by **pages and edits**. Each tier's line
+uses the scroll fill, so the plans light up word by word as you read down them.
 
-| Tier | Pages | Edits |
-| --- | --- | --- |
-| Starter | One | Two a month |
-| Studio | Up to five | Ten a month |
-| Full | Up to fifteen | No limit |
-| Partner | No limit | Same day, plus a shop |
+| Tier | Pages | Edits | Price |
+| --- | --- | --- | --- |
+| Starter | One | Two a month | $149 a month |
+| Studio | Up to five | Ten a month | $249 a month |
+| Full | Up to ten | Twenty a month | $399 a month |
+| Partner | No limit | No limit | from $699 a month |
+
+The figure is the only right aligned thing on the page, which is what makes the
+row scannable. The three columns are **fixed fractions**, not `auto`: every
+`.rate` is its own grid, so a content sized price column made each row measure
+its own columns, and "from $699 a month" being wider than "$149 a month" pushed
+that row's name and body left. Fixed fractions keep all four rows on one
+rhythm. The space before "a month" is a real character in the markup,
+not just the CSS margin, or the price reads as "$149a month" to a screen
+reader.
 
 ## Motion, and why each piece exists
 
@@ -199,6 +286,13 @@ left an empty `0px` track in front of every row.
 
 ## Rules learned the hard way here
 
+0. **A `display` rule outranks the `hidden` attribute.** `[hidden]` lives in the
+   UA stylesheet, so any author `display` declaration beats it. `.field__err`
+   set `display: flex` unconditionally, which meant every error row was on
+   screen from first paint with its icon showing and its message empty. Pair
+   every `display` rule on a toggleable element with an explicit
+   `[hidden] { display: none }`.
+
 1. **Never measure a transformed element with `getBoundingClientRect`.** The
    rect includes rotation, so a rotated element reports a fatter box, which
    tightens its clamp, which moves it, which re-fires the ResizeObserver. That
@@ -234,6 +328,10 @@ left an empty `0px` track in front of every row.
 
 - Every text colour was measured against its actual rendered background in both
   appearances. Lowest ratio is 5.15:1 against a 4.5:1 requirement.
+- Form field lines were failing WCAG 1.4.11, which asks for 3:1 on the visual
+  boundary of a control: they measured 2.59:1 on dark and 2.43:1 on light. They
+  now use a dedicated `--field-line` token at 2px, measuring 5.56:1 and 4.52:1,
+  going to full `--text` on hover and focus.
 - The rainbow and pixel mask never apply to text at rest, so nothing you read is
   ever low contrast or broken up.
 - Skip link, visible focus rings, labels above inputs, errors below them, no
