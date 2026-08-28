@@ -35,15 +35,32 @@ footer{padding:48px 56px;border-top:1px solid rgba(244,239,226,.15);display:flex
 .find h3{font-size:15px;font-family:system-ui,sans-serif;letter-spacing:.16em;text-transform:uppercase;color:#F2C14E;margin-bottom:22px}
 .find .l{display:flex;justify-content:space-between;padding:13px 0;border-bottom:1px solid rgba(244,239,226,.12);font-size:18px}
 
+.times{padding:64px 56px;border-top:1px solid rgba(244,239,226,.15)}
+.times h2{font-size:15px;font-family:system-ui,sans-serif;letter-spacing:.16em;text-transform:uppercase;color:#F2C14E;margin-bottom:32px}
+.tgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:30px}
+.tgrid .t{font-size:32px;letter-spacing:-.02em;color:#F2C14E}
+.tgrid p{margin-top:10px;color:#C8C0AC;font-size:16px;line-height:1.5}
+.steps{padding:64px 56px;border-top:1px solid rgba(244,239,226,.15);display:grid;grid-template-columns:.85fr 1.15fr;gap:44px;align-items:center}
+.steps img{width:100%;height:300px;object-fit:cover}
+.steps h2{font-size:15px;font-family:system-ui,sans-serif;letter-spacing:.16em;text-transform:uppercase;color:#F2C14E;margin-bottom:22px}
+.s{display:flex;gap:20px;padding:17px 0;border-bottom:1px solid rgba(244,239,226,.12)}
+.s .n{font-size:13px;font-family:system-ui,sans-serif;color:#F2C14E;padding-top:6px}
+.s h3{font-size:21px;letter-spacing:-.01em}
+.s p{margin-top:6px;color:#C8C0AC;font-size:16px;line-height:1.55}
+.trade{padding:64px 56px;border-top:1px solid rgba(244,239,226,.15);display:grid;grid-template-columns:1.05fr .95fr;gap:44px}
+.trade h2{font-size:40px;line-height:1.06;letter-spacing:-.03em;max-width:13ch}
+.trade p{margin-top:18px;color:#C8C0AC;font-size:17px;line-height:1.65;max-width:44ch}
+.trade .l{display:flex;justify-content:space-between;padding:13px 0;border-bottom:1px solid rgba(244,239,226,.12);font-size:18px}
+
 @media (max-width: 760px){
   body{font-size:15px}
   nav{flex-wrap:wrap;gap:10px}
-  nav ul{gap:16px;font-size:13px}
+  nav ul{gap:16px;font-size:13px;flex-wrap:wrap}
   .hero{grid-template-columns:1fr !important;padding-left:24px;padding-right:24px}
   .hero h1{font-size:40px !important}
   .hero img{height:240px !important}
-  .cards,.grid,.svc,.team,.two,.gal,.story,.find{grid-template-columns:1fr !important}
-  .band,.sub,.hrs,.hours,.price,.fees,.menu,.book,.clients{
+  .cards,.grid,.svc,.team,.two,.gal,.story,.find,.tgrid,.steps,.trade{grid-template-columns:1fr !important}
+  .band,.sub,.hrs,.hours,.price,.fees,.menu,.book,.clients,.times,.steps,.trade{
     padding-left:24px !important;padding-right:24px !important}
   .band,.sub,.hours,.hrs{flex-direction:column;align-items:flex-start;gap:18px;
     grid-template-columns:1fr !important;text-align:left}
@@ -58,7 +75,7 @@ footer{padding:48px 56px;border-top:1px solid rgba(244,239,226,.15);display:flex
 <section class="hero">
   <h1>Bread, baked the night before you want it.</h1>
   <p>A small bakehouse on Ninth Street. We mill our own flour and sell out most days by two.</p>
-  <div class="shot"><img loading="lazy" decoding="async" src="https://picsum.photos/seed/illomi-mock-bakery-hero/840/500" alt=""></div>
+  <div class="shot"><img loading="lazy" decoding="async" src="img/bakery-hero.jpg" width="840" height="500" alt="A baker drawing loaves out of the deck oven"></div>
 </section>
 <section class="menu">
   <h2>This week</h2>
@@ -67,9 +84,19 @@ footer{padding:48px 56px;border-top:1px solid rgba(244,239,226,.15);display:flex
   <div class="row"><span>Cardamom bun</span><span>4.25</span></div>
   <div class="row"><span>Olive and thyme fougasse</span><span>8.00</span></div>
 </section>
+<section class="times">
+  <h2>Out of the oven</h2>
+  <div class="tgrid">
+    <div><div class="t">4am</div><p>Sourdough and rye come out of the overnight bake.</p></div>
+    <div><div class="t">7am</div><p>Doors open. Buns and pastries on the shelf.</p></div>
+    <div><div class="t">11am</div><p>A second, smaller bake of fougasse.</p></div>
+    <div><div class="t">2pm</div><p>Whatever is left goes half price until we close.</p></div>
+  </div>
+</section>
+
 <div class="two">
-  <img loading="lazy" decoding="async" src="https://picsum.photos/seed/illomi-mock-bakery-a/420/360" alt="">
-  <img loading="lazy" decoding="async" src="https://picsum.photos/seed/illomi-mock-bakery-b/420/360" alt="">
+  <img loading="lazy" decoding="async" src="img/bakery-a.jpg" width="420" height="360" alt="A sourdough loaf cut open to show the crumb">
+  <img loading="lazy" decoding="async" src="img/bakery-b.jpg" width="420" height="360" alt="Ears of wheat in the field">
 </div>
 <section class="story">
   <div>
@@ -77,8 +104,32 @@ footer{padding:48px 56px;border-top:1px solid rgba(244,239,226,.15);display:flex
     <p>The grain comes from two farms within sixty miles, and it goes through our own stone mill at the back of the shop. Flour that fresh behaves differently, so the doughs are mixed slower and rested longer.</p>
     <p>Everything is baked overnight. What is on the shelf at seven is what came out at four.</p>
   </div>
-  <img loading="lazy" decoding="async" src="https://picsum.photos/seed/illomi-mock-bakery-mill/420/300" alt="">
+  <img loading="lazy" decoding="async" src="img/bakery-mill.jpg" width="420" height="300" alt="Flour being dusted across the bench">
 </section>
+<section class="steps">
+  <img loading="lazy" decoding="async" src="img/bakery-pin.jpg" width="420" height="300" alt="A hand working through wet dough">
+  <div>
+    <h2>How a loaf gets here</h2>
+    <div class="s"><span class="n">01</span><div><h3>Milled on Monday</h3><p>The week's flour is stone ground at the back of the shop, from grain grown within sixty miles.</p></div></div>
+    <div class="s"><span class="n">02</span><div><h3>Mixed slow, rested cold</h3><p>Fresh flour drinks differently, so the dough is mixed gently and left overnight in the cold room.</p></div></div>
+    <div class="s"><span class="n">03</span><div><h3>Baked before dawn</h3><p>Into the oven at four. On the shelf by seven. Sold out most days by two.</p></div></div>
+  </div>
+</section>
+<section class="trade" id="wholesale">
+  <div>
+    <h2>Bread for your kitchen.</h2>
+    <p>We supply a handful of restaurants and cafes nearby. Standing orders are baked to the same overnight schedule as the shop, so a delivery at eight was in the oven at four.</p>
+    <p>If you want to taste before you commit, ask for a sample box on a Tuesday.</p>
+  </div>
+  <div>
+    <div class="l"><span>Order by</span><span>Thursday, for the week after</span></div>
+    <div class="l"><span>Minimum</span><span>Twelve loaves</span></div>
+    <div class="l"><span>Delivery</span><span>Tuesday and Friday, before 8am</span></div>
+    <div class="l"><span>Area</span><span>Ten miles of the shop</span></div>
+    <div class="l"><span>Invoicing</span><span>Monthly, net 14</span></div>
+  </div>
+</section>
+
 <section class="find">
   <div>
     <h3>Opening</h3>

@@ -49,17 +49,28 @@ footer{padding:44px 56px;color:#55697A;font-size:14px;display:flex;justify-conte
 .where .l{display:flex;justify-content:space-between;padding:11px 0;border-bottom:1px solid #EDF2F5;font-size:15px;color:#55697A}
 .where .l b{color:#16232E;font-weight:600}
 
+.faq{padding:0 56px 56px}
+.faq h2{font-size:13px;letter-spacing:.16em;text-transform:uppercase;color:#1E6B7B;margin-bottom:20px}
+.qgrid{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.qgrid div{background:#fff;border:1px solid #E4EBF0;border-radius:20px;padding:26px}
+.qgrid h3{font-size:17px}
+.qgrid p{margin-top:8px;color:#55697A;font-size:15px;line-height:1.55}
+.urgent{background:#EAF3F5;margin:0 56px 56px;border-radius:24px;padding:40px;display:flex;justify-content:space-between;align-items:center;gap:28px}
+.urgent h2{font-size:28px;letter-spacing:-.02em;max-width:16ch;line-height:1.15;color:#0F3F4A}
+.urgent p{margin-top:10px;color:#55697A;font-size:16px;line-height:1.55;max-width:42ch}
+.urgent span{background:#1E6B7B;color:#fff;padding:14px 26px;border-radius:999px;font-size:14px;font-weight:600;white-space:nowrap}
+
 @media (max-width: 760px){
   body{font-size:15px}
   nav{flex-wrap:wrap;gap:10px}
-  nav ul{gap:16px;font-size:13px}
+  nav ul{gap:16px;font-size:13px;flex-wrap:wrap}
   .hero{grid-template-columns:1fr !important;padding-left:24px;padding-right:24px}
   .hero h1{font-size:40px !important}
   .hero img{height:240px !important}
-  .cards,.grid,.svc,.team,.two,.gal,.visit .vgrid,.where,.vgrid{grid-template-columns:1fr !important}
-  .band,.sub,.hrs,.hours,.price,.fees,.menu,.book,.clients{
+  .cards,.grid,.svc,.team,.two,.gal,.visit .vgrid,.where,.vgrid,.qgrid{grid-template-columns:1fr !important}
+  .band,.sub,.hrs,.hours,.price,.fees,.menu,.book,.clients,.faq{
     padding-left:24px !important;padding-right:24px !important}
-  .band,.sub,.hours,.hrs{flex-direction:column;align-items:flex-start;gap:18px;
+  .band,.sub,.hours,.hrs,.urgent{flex-direction:column;align-items:flex-start;gap:18px;
     grid-template-columns:1fr !important;text-align:left}
   .band h2,.sub h2,.hrs h2,.hours h3{font-size:26px !important;max-width:none}
   .fields{grid-template-columns:1fr !important}
@@ -75,7 +86,7 @@ footer{padding:44px 56px;color:#55697A;font-size:14px;display:flex;justify-conte
     <p>Same week appointments for registered patients, and an evening clinic on Thursdays.</p>
     <div class="pills"><span>Open Saturdays</span><span>Nervous patients welcome</span><span>Free parking</span></div>
   </div>
-  <img loading="lazy" decoding="async" src="https://picsum.photos/seed/illomi-mock-dental-hero/540/480" alt="">
+  <img loading="lazy" decoding="async" src="img/dental-hero.jpg" width="540" height="480" alt="A treatment room, chair and light">
 </section>
 <section class="cards">
   <div><h3>Check ups</h3><p>Twenty minutes, with everything explained before it happens.</p></div>
@@ -94,9 +105,9 @@ footer{padding:44px 56px;color:#55697A;font-size:14px;display:flex;justify-conte
   <div class="fee"><span>White filling, from</span><span>140</span></div>
 </section>
 <section class="team">
-  <div><img loading="lazy" decoding="async" src="https://picsum.photos/seed/illomi-mock-dental-a/360/320" alt=""><p>Practice team</p><small>Four dentists, two hygienists</small></div>
-  <div><img loading="lazy" decoding="async" src="https://picsum.photos/seed/illomi-mock-dental-b/360/320" alt=""><p>The building</p><small>Ground floor, step free</small></div>
-  <div><img loading="lazy" decoding="async" src="https://picsum.photos/seed/illomi-mock-dental-c/360/320" alt=""><p>Evening clinic</p><small>Thursdays until 8pm</small></div>
+  <div><img loading="lazy" decoding="async" src="img/dental-a.jpg" width="360" height="320" alt="A clinician at work in the practice"><p>Practice team</p><small>Four dentists, two hygienists</small></div>
+  <div><img loading="lazy" decoding="async" src="img/dental-b.jpg" width="360" height="320" alt="Instruments on the unit"><p>The building</p><small>Ground floor, step free</small></div>
+  <div><img loading="lazy" decoding="async" src="img/dental-c.jpg" width="360" height="320" alt="A toothbrush and toothpaste"><p>Evening clinic</p><small>Thursdays until 8pm</small></div>
 </section>
 <section class="visit">
   <h2>What a first visit looks like.</h2>
@@ -121,6 +132,22 @@ footer{padding:44px 56px;color:#55697A;font-size:14px;display:flex;justify-conte
     <div class="l"><span>Parking</span><b>Free, two hours</b></div>
     <div class="l"><span>Emergencies</span><b>Call before 9am</b></div>
   </div>
+</section>
+<section class="faq">
+  <h2>Common questions</h2>
+  <div class="qgrid">
+    <div><h3>Are you taking new patients?</h3><p>Yes, for both routine care and urgent appointments.</p></div>
+    <div><h3>Do you take my insurance?</h3><p>We invoice most major plans directly. Bring your details to the first visit.</p></div>
+    <div><h3>What if I am nervous?</h3><p>Say so when you book. We allow longer, explain each step, and stop whenever you ask.</p></div>
+    <div><h3>Do you see children?</h3><p>From age three, in the same chair as everyone else.</p></div>
+  </div>
+</section>
+<section class="urgent">
+  <div>
+    <h2>In pain today?</h2>
+    <p>Two slots are held every weekday for urgent appointments. Ring before ten and we can nearly always see you the same day.</p>
+  </div>
+  <span>Ring the practice</span>
 </section>
 <footer><span>Marisol Dental</span><span>14 Prospect Row</span><span>Mon to Sat</span></footer>
 

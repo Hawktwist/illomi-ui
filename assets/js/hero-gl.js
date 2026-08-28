@@ -223,6 +223,11 @@
     var w = Math.max(1, Math.round(rect.width * dpr));
     var h = Math.max(1, Math.round(rect.height * dpr));
     if (w === W && h === H) return;
+    /* A phone's URL bar collapsing changes the viewport height mid scroll.
+       Reallocating the drawing buffer for that is what broke the wind, so a
+       height only wobble is ignored: the field is soft enough that scaling it
+       a few percent is invisible, whereas the reallocation was not. */
+    if (coarse && W && H && w === W && Math.abs(h - H) < H * 0.25) return;
     W = w; H = h;
     canvas.width = W; canvas.height = H;
     gl.viewport(0, 0, W, H);
@@ -249,10 +254,15 @@
   var running = false;
   var visible = true;
   var raf = 0;
-  var start = performance.now();
 
   var lastPaint = 0;
   var minDelta = coarse ? 1000 / 30 : 0;   /* a slow wind does not need 60fps */
+
+  /* Animation time is accumulated, not read off the wall clock. The loop stops
+     whenever the hero leaves the screen, and wall clock time keeps running
+     while it is stopped, so the wave used to jump forward by however long the
+     pause lasted at the moment it scrolled back into view. */
+  var animT = 0, prevNow = 0;
 
   function frame(now) {
     raf = 0;
@@ -260,7 +270,11 @@
     if (minDelta && now - lastPaint < minDelta) return;
     lastPaint = now;
 
-    var t = (now - start) / 1000;
+    var dt = prevNow ? (now - prevNow) / 1000 : 0;
+    prevNow = now;
+    if (dt > 0.1) dt = 0.1;          /* a stall must not lurch the field */
+    animT += dt;
+    var t = animT;
 
     if (!hasPointer) {
       /* idle drift so the field has life before anyone touches it */
@@ -290,6 +304,7 @@
   }
   function stopLoop() {
     running = false;
+    prevNow = 0;
     if (raf) { cancelAnimationFrame(raf); raf = 0; }
   }
 
@@ -318,13 +333,13 @@
     new IntersectionObserver(function (entries) {
       visible = entries[0].isIntersecting;
       if (visible) { if (!raf && running) raf = requestAnimationFrame(frame); }
-      else if (raf) { cancelAnimationFrame(raf); raf = 0; }
+      else if (raf) { cancelAnimationFrame(raf); raf = 0; prevNow = 0; }
     }, { threshold: 0 }).observe(canvas);
   }
 
   document.addEventListener("visibilitychange", function () {
-    if (document.hidden) { if (raf) { cancelAnimationFrame(raf); raf = 0; } }
-    else if (running && visible && !raf) { start = performance.now() - 1000; raf = requestAnimationFrame(frame); }
+    if (document.hidden) { if (raf) { cancelAnimationFrame(raf); raf = 0; prevNow = 0; } }
+    else if (running && visible && !raf) { prevNow = 0; raf = requestAnimationFrame(frame); }
   });
 
   if (!coarse) window.addEventListener("pointermove", onMove, { passive: true });

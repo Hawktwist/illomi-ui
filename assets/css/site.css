@@ -229,7 +229,13 @@ section[id] { scroll-margin-top: var(--nav-h); }
 
 /* ---------- hero: editorial manifesto over the light field ---------- */
 .hero {
-  position: relative; min-height: 100dvh;
+  position: relative;
+  /* svh, not dvh. dvh tracks the mobile URL bar, so on a phone every
+     scroll resized the hero, and the WebGL canvas fills the hero: the
+     drawing buffer was being reallocated mid scroll. svh is the stable
+     small viewport height and does not move. */
+  min-height: 100vh;
+  min-height: 100svh;
   display: grid; align-content: end;
   padding-top: calc(var(--nav-h) + 1rem);
   padding-bottom: clamp(1.5rem, 4vh, 3rem);
@@ -283,7 +289,8 @@ section[id] { scroll-margin-top: var(--nav-h); }
 /* ---------- work: full bleed horizontal pan ---------- */
 .work__pin { height: 340vh; }
 .work__sticky {
-  position: sticky; top: 0; height: 100dvh;
+  /* sticky and scroll driven, so it wants the stable height too */
+  position: sticky; top: 0; height: 100vh; height: 100svh;
   display: flex; flex-direction: column; justify-content: center;
   gap: clamp(1.5rem, 4vh, 3rem);
   overflow: hidden; padding-top: var(--nav-h);

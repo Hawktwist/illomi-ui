@@ -45,15 +45,25 @@ footer{padding:40px 52px;border-top:1px solid #EBE2D6;color:#6B5B4C;font-size:14
 .trade p{font-size:20px;letter-spacing:-.02em;max-width:38ch}
 .trade span{background:#241C16;color:#FFFDF9;padding:13px 24px;border-radius:4px;font-weight:800;font-size:14px;white-space:nowrap}
 
+.origins{padding:56px 52px;border-top:1px solid #EBE2D6}
+.origins h2{font-size:15px;letter-spacing:.14em;text-transform:uppercase;color:#C9552F;margin-bottom:24px}
+.o{display:grid;grid-template-columns:1fr 1.5fr .7fr .5fr;gap:20px;align-items:baseline;padding:17px 0;border-bottom:1px solid #EBE2D6;font-size:16px}
+.o .nm{font-size:19px;letter-spacing:-.015em}
+.o .no,.o .rs{color:#6B5B4C;font-size:15px}
+.o .pr{font-weight:800;text-align:right}
+.visit{padding:56px 52px;border-top:1px solid #EBE2D6;display:grid;grid-template-columns:1fr 1fr;gap:44px}
+.visit h3{font-size:15px;letter-spacing:.14em;text-transform:uppercase;color:#C9552F;margin-bottom:20px}
+.visit .l{display:flex;justify-content:space-between;padding:13px 0;border-bottom:1px solid #EBE2D6;font-size:17px}
+
 @media (max-width: 760px){
   body{font-size:15px}
   nav{flex-wrap:wrap;gap:10px}
-  nav ul{gap:16px;font-size:13px}
+  nav ul{gap:16px;font-size:13px;flex-wrap:wrap}
   .hero{grid-template-columns:1fr !important;padding-left:24px;padding-right:24px}
   .hero h1{font-size:40px !important}
   .hero img{height:240px !important}
-  .cards,.grid,.svc,.team,.two,.gal,.roast,.bgrid,.trade{grid-template-columns:1fr !important}
-  .band,.sub,.hrs,.hours,.price,.fees,.menu,.book,.clients{
+  .cards,.grid,.svc,.team,.two,.gal,.roast,.bgrid,.trade,.visit,.o{grid-template-columns:1fr !important}
+  .band,.sub,.hrs,.hours,.price,.fees,.menu,.book,.clients,.origins,.visit{
     padding-left:24px !important;padding-right:24px !important}
   .band,.sub,.hours,.hrs{flex-direction:column;align-items:flex-start;gap:18px;
     grid-template-columns:1fr !important;text-align:left}
@@ -71,19 +81,19 @@ footer{padding:40px 52px;border-top:1px solid #EBE2D6;color:#6B5B4C;font-size:14
     <p>Small batch coffee from a railway arch. We roast to order and ship the same week.</p>
     <a class="go">Shop the coffee</a>
   </div>
-  <img loading="lazy" decoding="async" src="https://picsum.photos/seed/illomi-mock-roast-hero/540/500" alt="">
+  <img loading="lazy" decoding="async" src="img/roast-hero.jpg" width="540" height="500" alt="A cup of coffee beside roasted beans">
 </section>
 <section class="grid">
-  <div class="card"><img loading="lazy" decoding="async" src="https://picsum.photos/seed/illomi-mock-roast-a/360/290" alt=""><h3>Rill</h3><p class="meta">Colombia, washed. Plum and cocoa.</p><p class="price">12.50</p></div>
-  <div class="card"><img loading="lazy" decoding="async" src="https://picsum.photos/seed/illomi-mock-roast-b/360/290" alt=""><h3>Marsh</h3><p class="meta">Ethiopia, natural. Apricot and black tea.</p><p class="price">14.00</p></div>
-  <div class="card"><img loading="lazy" decoding="async" src="https://picsum.photos/seed/illomi-mock-roast-c/360/290" alt=""><h3>Ninefold</h3><p class="meta">House blend. Caramel and toasted almond.</p><p class="price">11.00</p></div>
+  <div class="card"><img loading="lazy" decoding="async" src="img/roast-a.jpg" width="360" height="290" alt="Roasted beans close up"><h3>Rill</h3><p class="meta">Colombia, washed. Plum and cocoa.</p><p class="price">12.50</p></div>
+  <div class="card"><img loading="lazy" decoding="async" src="img/roast-b.jpg" width="360" height="290" alt="Coffee brewing through a paper filter"><h3>Marsh</h3><p class="meta">Ethiopia, natural. Apricot and black tea.</p><p class="price">14.00</p></div>
+  <div class="card"><img loading="lazy" decoding="async" src="img/roast-c.jpg" width="360" height="290" alt="The espresso machine and warmed cups"><h3>Ninefold</h3><p class="meta">House blend. Caramel and toasted almond.</p><p class="price">11.00</p></div>
 </section>
 <section class="sub">
   <div><h2>Pick a bag, pick a week, forget about it.</h2><p>Change the roast, skip a delivery or stop entirely from one page. No account needed.</p></div>
   <a>Start a subscription</a>
 </section>
 <section class="roast">
-  <img loading="lazy" decoding="async" src="https://picsum.photos/seed/illomi-mock-roast-arch/420/300" alt="">
+  <img loading="lazy" decoding="async" src="img/roast-arch.jpg" width="420" height="300" alt="Beans turning in the roasting drum">
   <div>
     <h2>One drum, one person watching it.</h2>
     <p>Everything is roasted on a twelve kilo drum in the arch. Small batches mean we can stop a roast on the day it tastes right rather than on a schedule.</p>
@@ -101,6 +111,29 @@ footer{padding:40px 52px;border-top:1px solid #EBE2D6;color:#6B5B4C;font-size:14
 <section class="trade">
   <p>We supply about thirty cafes and offices. Wholesale pricing starts at six kilos a month.</p>
   <span>Talk to us</span>
+</section>
+<section class="origins">
+  <h2>On the shelf this month</h2>
+  <div class="o"><span class="nm">Kirinyaga AA</span><span class="no">Blackcurrant, tomato leaf, dense and sharp</span><span class="rs">Filter</span><span class="pr">19</span></div>
+  <div class="o"><span class="nm">Huila</span><span class="no">Red apple, cane sugar, soft finish</span><span class="rs">Either</span><span class="pr">16</span></div>
+  <div class="o"><span class="nm">Sidama</span><span class="no">Peach, jasmine, tea like body</span><span class="rs">Filter</span><span class="pr">18</span></div>
+  <div class="o"><span class="nm">Cerrado</span><span class="no">Cocoa, hazelnut, heavy in milk</span><span class="rs">Espresso</span><span class="pr">15</span></div>
+</section>
+<section class="visit">
+  <div>
+    <h3>The counter</h3>
+    <div class="l"><span>Wednesday to Friday</span><span>8am until 4pm</span></div>
+    <div class="l"><span>Saturday</span><span>9am until 4pm</span></div>
+    <div class="l"><span>Sunday</span><span>9am until 2pm</span></div>
+    <div class="l"><span>Monday and Tuesday</span><span>Roasting, no counter</span></div>
+  </div>
+  <div>
+    <h3>Find us</h3>
+    <div class="l"><span>Address</span><span>Arch 12, Sidings Road</span></div>
+    <div class="l"><span>Cupping</span><span>Fridays at 10, free</span></div>
+    <div class="l"><span>Collection</span><span>Order by 3pm, same day</span></div>
+    <div class="l"><span>Parking</span><span>Along Sidings Road</span></div>
+  </div>
 </section>
 <footer><span>Kestrel Roasting Co.</span><span>Arch 12, Sidings Road</span><span>Free shipping over 30</span></footer>
 

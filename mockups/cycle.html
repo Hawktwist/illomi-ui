@@ -45,15 +45,26 @@ footer{padding:34px 48px;border-top:1px solid #262626;color:#7A7A7A;font-size:13
 .blist{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:#262626;border:1px solid #262626}
 .blist span{background:#0E0E0E;padding:20px 16px;font-size:14px;text-transform:uppercase;letter-spacing:.08em}
 
+.flow{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:#262626;border-top:1px solid #262626}
+.flow div{background:#0E0E0E;padding:30px 26px}
+.flow .n{font-size:12px;letter-spacing:.14em;color:#FF5B1F;font-weight:800}
+.flow h3{margin-top:12px;font-size:18px;text-transform:uppercase;font-weight:800;letter-spacing:-.01em}
+.flow p{margin-top:8px;color:#9E9E9E;font-size:14px;line-height:1.55}
+.faq{padding:48px;border-top:1px solid #262626;display:grid;grid-template-columns:1fr 1fr;gap:0 44px}
+.faq h2{grid-column:1/-1;font-size:13px;letter-spacing:.16em;text-transform:uppercase;color:#FF5B1F;margin-bottom:18px}
+.q{padding:18px 0;border-bottom:1px solid #262626}
+.q h3{font-size:16px;text-transform:uppercase;font-weight:800;letter-spacing:-.01em}
+.q p{margin-top:7px;color:#9E9E9E;font-size:14px;line-height:1.55}
+
 @media (max-width: 760px){
   body{font-size:15px}
   nav{flex-wrap:wrap;gap:10px}
-  nav ul{gap:16px;font-size:13px}
+  nav ul{gap:16px;font-size:13px;flex-wrap:wrap}
   .hero{grid-template-columns:1fr !important;padding-left:24px;padding-right:24px}
   .hero h1{font-size:40px !important}
   .hero img{height:240px !important}
-  .cards,.grid,.svc,.team,.two,.gal,.about,.blist{grid-template-columns:1fr !important}
-  .band,.sub,.hrs,.hours,.price,.fees,.menu,.book,.clients{
+  .cards,.grid,.svc,.team,.two,.gal,.about,.blist,.flow,.faq{grid-template-columns:1fr !important}
+  .band,.sub,.hrs,.hours,.price,.fees,.menu,.book,.clients,.faq{
     padding-left:24px !important;padding-right:24px !important}
   .band,.sub,.hours,.hrs{flex-direction:column;align-items:flex-start;gap:18px;
     grid-template-columns:1fr !important;text-align:left}
@@ -70,7 +81,7 @@ footer{padding:34px 48px;border-top:1px solid #262626;color:#7A7A7A;font-size:13
     <h1>Fixed this<br>week. <em>Not</em><br>next month.</h1>
     <p>A two person workshop. Drop the bike before ten and most jobs are done the same day.</p>
   </div>
-  <img loading="lazy" decoding="async" src="https://picsum.photos/seed/illomi-mock-cycle-hero/540/460" alt="">
+  <img loading="lazy" decoding="async" src="img/cycle-hero.jpg" width="540" height="460" alt="The hub and spokes of a wheel on the stand">
 </section>
 <section class="book">
   <h2>Book a repair</h2>
@@ -86,9 +97,16 @@ footer{padding:34px 48px;border-top:1px solid #262626;color:#7A7A7A;font-size:13
   <div><h3>Wheel build</h3><p>Hand built, tensioned and trued on the stand.</p><span>from 140</span></div>
   <div><h3>Bike fit</h3><p>Ninety minutes with measurements you keep.</p><span>from 95</span></div>
 </section>
+<section class="flow">
+  <div><div class="n">01</div><h3>Drop it in</h3><p>Anything under half an hour we do while you wait. No appointment.</p></div>
+  <div><div class="n">02</div><h3>You get a price</h3><p>Written, before we touch it. Nothing starts without a yes from you.</p></div>
+  <div><div class="n">03</div><h3>Into the stand</h3><p>Most jobs go out the same week. Wheel builds take a little longer.</p></div>
+  <div><div class="n">04</div><h3>Ride it away</h3><p>Two weeks of free adjustment on anything we fitted.</p></div>
+</section>
+
 <section class="gal">
-  <img loading="lazy" decoding="async" src="https://picsum.photos/seed/illomi-mock-cycle-a/600/410" alt="">
-  <img loading="lazy" decoding="async" src="https://picsum.photos/seed/illomi-mock-cycle-b/320/410" alt="">
+  <img loading="lazy" decoding="async" src="img/cycle-a.jpg" width="600" height="410" alt="A mechanic working on a bicycle">
+  <img loading="lazy" decoding="async" src="img/cycle-b.jpg" width="320" height="410" alt="A chainring and drivetrain">
 </section>
 <section class="hrs">
   <h2>Drop in.<br>No appointment<br>for small jobs.</h2>
@@ -106,6 +124,17 @@ footer{padding:34px 48px;border-top:1px solid #262626;color:#7A7A7A;font-size:13
   <div class="blist">
     <span>Shimano</span><span>SRAM</span><span>Campagnolo</span><span>Hope</span>
     <span>Brompton</span><span>Bosch e-systems</span><span>Rohloff</span><span>Chris King</span>
+  </div>
+</section>
+<section class="faq">
+  <h2>Before you drop it off</h2>
+  <div>
+    <div class="q"><h3>Do I need to book?</h3><p>For a tune up or a fit, yes. Punctures, brakes and gear adjustments are walk in.</p></div>
+    <div class="q"><h3>Do you work on e-bikes?</h3><p>Everything except motor and battery internals, which have to go back to the maker.</p></div>
+  </div>
+  <div>
+    <div class="q"><h3>Can you order a part in?</h3><p>Most things land in two or three days. We will tell you if it is longer.</p></div>
+    <div class="q"><h3>Do you buy old bikes?</h3><p>No, but bring it in and we will tell you honestly what it is worth.</p></div>
   </div>
 </section>
 <footer>Rivet Cycle Works &nbsp; Mon to Sat &nbsp; Unit 4, Canal Yard</footer>
